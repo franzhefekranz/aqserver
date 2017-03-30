@@ -1,0 +1,50 @@
+#######################
+[aqdata]
+#date	:		2017-02-15 16:07:14.798
+place	: 		Steti
+creator	: 		Michael Taxis
+machine	: 		arcus EVO
+order	: 		
+remarks	: 		; use tab for multiline values
+arcus EVO
+investigating malfunction / referencing of pivoting drum
+#######################
+
+[communication]
+ip: 192.168.1.213
+rack: 0
+slot: 2
+maxattempts: 10
+#######################
+
+[misc]
+delimiter: ;
+datafileprefix: Steti-EVO-drives
+datafile: testplcsim
+autostart: 1
+datapath: D:\hzmmic02\Documents\01_Projekte\Service\Mondi Steti PrimeCalX-20160126\
+usedir: 1
+scantime: 100
+maxrecords: 10000
+#######################
+
+[trigger]
+trgsignal: 0
+trgcondition: !=
+trgvalue: 0
+pretrg: 30
+posttrg: 30
+#######################
+
+[debug]
+dbglevel: 0
+logfile: aqserver
+logts: 1
+#######################
+
+[values]
+speed: DB63.DF42
+#######################
+
+
+number;timestamp;speed;
