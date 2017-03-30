@@ -16,6 +16,3 @@ When running several instances of the program, using different config files, val
 Please note that this program is in an early stage of development. If you run into problems when using it, see the "Problems" section of this manual. Aqserver will not create a problem with your PLC program though.
 
 Using Kst2 from https://kst-plot.kde.org the datafile can be read and plotted online during the recording. Also decompressed archives can be plotted to your liking.
-
-An alternative would be LiveGraph from http://www.live-graph.org , but then the data files must be modified, because LiveGraph is expecting csv-files in a certain format (actually this is not provided by Aqserver at the moment).
-
