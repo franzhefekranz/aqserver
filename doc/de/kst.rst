@@ -94,6 +94,61 @@ Stelle die Anzeige der Diagramme je nach Wunsch auf "in one plot" oder "1 plot p
     
 Jetzt sollten die aufgezeichneten Werte angezeigt werden. Falls du eine aktuelle Datendatei gewählt hast, sollten sich die Diagramme auch aktualisieren.
 
-.. note:: Wenn ein Trigger für eine neue Datendatei ausgelöst wurde, benutze den Knopf mit dem grünen runden Pfeil, um die Datei zu aktualisieren. Sonst wird bei einem Wechsel auf eine neue Datei nichts mehr angezeigt.
+.. note:: Wenn ein Trigger für eine neue Datendatei ausgelöst wurde, benutze den Knopf mit dem grünen runden Pfeil, um die Datei zu aktualisieren. 
+    Sonst wird bei einem Wechsel auf eine neue Datei nichts mehr angezeigt.
 
 Für detaillierte Information über Kst2, lies die Dokumentation oder browse durch die Foren usw.
+
+Hinzufügen einer Anzeige des aktuellen Werts
+--------------------------------------------
+
+Soll im Diagramm der aktuelle Wert angezeigt werden, kann man dies mit dem Textwerkzeug realisieren.
+Dazu gehe wie folgt vor:
+
+* Aktiviere das "Label" Werkzeug, es öffnet sich ein Fester zur Eingabe des Textes
+
+.. image:: images/kst/label.png
+    :width: 2cm
+    :align: center
+    :alt: Label-Werkzeug
+
+.. image:: images/kst/label1.png
+    :width: 12cm
+    :align: center
+    :alt: Eingabefenster
+    
+* Gib deinen Text ein. Um den aktuellen Wert einzufügen, klicke rechts und wähle
+ "Insert new scalar". Es öffnet sich das Fenster zur Einstellung für den neuen Skalar.
+
+.. image:: images/kst/label2.png
+    :width: 12cm
+    :align: center
+    :alt: Fenster für neuen Skalar
+    
+* Hier stellen wir folgendes ein:
+
+     * aktiviere "Read from data vector"
+     * wähle den gewünschten Wert aus der Dropdownliste
+     * aktiviere das Kästchen "last frame" und akzeptiere die Einstellungen mit Ok
+* Zurück im Eingabefenster für das Label, kann noch das Format des Wertes hinzugefügt werden
+ (Näheres steht in der Hilfe, Button "Help")
+ Nach Fertigstellung verlasse die Eingabe mit "Ok"
+
+.. image:: images/kst/label3.png
+    :width: 12cm
+    :align: center
+    :alt: Fenster mit dem fertigen Label
+
+* Platziere jetzt das Label mit der Maus, bei Klick wird das Label platziert.
+
+.. image:: images/kst/label4.png
+    :width: 12cm
+    :align: center
+    :alt: Diagramm mit Label
+    
+.. image:: images/kst/label5.png
+    :width: 6cm
+    :align: center
+    :alt: Label
+
+Das Label sollte sich jetzt aktualisieren und den aktuellen Wert anzeigen.

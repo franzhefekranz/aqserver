@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+        <param name="Window Styles" value="0x801227">
+        <param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Aqserver - Siemens S7 data acquisition 1a documentation">
+    <param name="Local" value="index.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="About">
+    <param name="Local" value="about.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Installation">
+    <param name="Local" value="installation.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Install from source">
+    <param name="Local" value="installation.html#install-from-source">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Install with Windows Installer">
+    <param name="Local" value="installation.html#install-with-windows-installer">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Manual installation">
+    <param name="Local" value="installation.html#manual-installation">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Configuration file for data acquisition server">
+    <param name="Local" value="configuration.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Prerequisites">
+    <param name="Local" value="configuration.html#prerequisites">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Settings in config file">
+    <param name="Local" value="configuration.html#settings-in-config-file">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Aqdata settings">
+    <param name="Local" value="configuration.html#aqdata-settings">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Communication settings">
+    <param name="Local" value="configuration.html#communication-settings">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Miscellaneous settings">
+    <param name="Local" value="configuration.html#miscellaneous-settings">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Trigger settings">
+    <param name="Local" value="configuration.html#trigger-settings">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Debug settings">
+    <param name="Local" value="configuration.html#debug-settings">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Value settings">
+    <param name="Local" value="configuration.html#value-settings">
+</OBJECT>
+</UL>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Command line options">
+    <param name="Local" value="options.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Usage">
+    <param name="Local" value="usage.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Starting from a python console">
+    <param name="Local" value="usage.html#starting-from-a-python-console">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Using Windows installer version">
+    <param name="Local" value="usage.html#using-windows-installer-version">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Running multiple instances">
+    <param name="Local" value="instance.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Problems">
+    <param name="Local" value="problems.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Frequently asked questions">
+    <param name="Local" value="problems.html#frequently-asked-questions">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Introduction to Kst2">
+    <param name="Local" value="kst.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Usage">
+    <param name="Local" value="kst.html#usage">
+</OBJECT>
+</UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Changelog">
+    <param name="Local" value="changelog.html">
+</OBJECT>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Licensing">
+    <param name="Local" value="license.html">
+</OBJECT>
+<UL>
+<LI> <OBJECT type="text/sitemap">
+    <param name="Name" value="Disclaimer of Warranty">
+    <param name="Local" value="license.html#disclaimer-of-warranty">
+</OBJECT>
+</UL>
+</UL></BODY></HTML>

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=cp1252" />
+    
+    <title>Introduction to Kst2</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - Siemens S7 data acquisition 1a documentation" href="index.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="Problems" href="problems.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="changelog.html" title="Changelog"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="problems.html" title="Problems"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="introduction-to-kst2">
+<h1>Introduction to Kst2</h1>
+<p>Kst2 is an open source graph and plot creator and visualizer. The program can be downloaded from from <a class="reference external" href="https://kst-plot.kde.org" target="_blank">https://kst-plot.kde.org</a> . Most recent Windows version is 2.08.
+On the homepage of the program some tutorial videos are provided. Maybe take a look at these before starting to use Aqserver and Kst2.</p>
+<div class="section" id="usage">
+<h2>Usage</h2>
+<a class="reference internal image-reference" href="_images/main.png"><img alt="main window" class="align-center" src="_images/main.png" style="width: 12cm;" /></a>
+<p>The easiest way to use Kst2 as an online chart visualizer together with Aqserver is to start with the data wizard.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can start the data wizard several times, also with the same file, when you want to add more graphs to your display. Also if you run multiple instances of Aqserver you can pick a different datafile.</p>
+</div>
+<p>Start it by clicking the following icon:</p>
+<img alt="data wizard icon" class="align-center" src="_images/wizard.png" />
+<a class="reference internal image-reference" href="_images/wiz1.png"><img alt="data wizard" class="align-center" src="_images/wiz1.png" style="width: 12cm;" /></a>
+<p>The data wizard window will popup where you must select the active data file (this will be in your sub directory data ). Browse to the file to select it and then click the configure button.</p>
+<a class="reference internal image-reference" href="_images/wiz2.png"><img alt="configure ASCII file" class="align-center" src="_images/wiz2.png" style="width: 12cm;" /></a>
+<p>The &#8220;configure ASCII file&#8221; window will popup. Here you must configure the properties of your data file. Values you must adjust include:</p>
+<ul class="simple">
+<li>Data starts at line: scroll down the window showing your datafile until you reach the first recorded values. Note the number and put into the required field. If the first data line is not shown, try the button &#8220;Preview first 1000 lines in new window&#8221;.</li>
+<li>Obviously the &#8220;Read field names from:&#8221; option must activated and the acording line number must be entered (see above value - 1)</li>
+<li>set the decimal separator</li>
+<li>set the Custom delimiter to the one you have used in the datafile</li>
+<li>activate &#8220;Date/Time Interpretation&#8221;</li>
+<li>scroll down the &#8220;Interpret field as&#8221; and pick the value timestamp. (If no selection is shown, exit with &#8220;Ok&#8221; and enter configuration again, then try to pick timestamp).</li>
+<li>activate &#8220;formatted string&#8221; and set the format to &#8220;yyyy-MM-dd hh:mm:ss.zzz&#8221;. Then our timestamp will be interpreted correctly.</li>
+</ul>
+<p>Leave the window with ok. Set the update type to either time interval or you can try change detection. When using an already recorded archive you can use no update. Then click &#8220;Next&#8221; in the Data Wizard window.</p>
+<a class="reference internal image-reference" href="_images/wiz3.png"><img alt="Preview first 1000 lines in new window" class="align-center" src="_images/wiz3.png" style="width: 12cm;" /></a>
+<p>Data wizard with  &#8220;Preview first 1000 lines in new window&#8221;.</p>
+<a class="reference internal image-reference" href="_images/wiz4.png"><img alt="pick values to diplay" class="align-center" src="_images/wiz4.png" style="width: 12cm;" /></a>
+<p>Pick the values you want to be shown in a graph and move them to the right window with the arow buttons. Click next</p>
+<a class="reference internal image-reference" href="_images/wiz5.png"><img alt="pick values to diplay with values selected" class="align-center" src="_images/wiz5.png" style="width: 12cm;" /></a>
+<p>Same with some values selected.</p>
+<a class="reference internal image-reference" href="_images/wiz6.png"><img alt="plot settings" class="align-center" src="_images/wiz6.png" style="width: 12cm;" /></a>
+<p>Experiment a little bit with data range settings. Activate &#8220;Create XY-plots&#8221;. For X-axis vector we select our field &#8220;timestamp&#8221;. Click next.</p>
+<a class="reference internal image-reference" href="_images/wiz7.png"><img alt="layout settings" class="align-center" src="_images/wiz7.png" style="width: 12cm;" /></a>
+<p>Then we setup the appearance of the graphs, either in one plot or 1 plot per curve.</p>
+<a class="reference internal image-reference" href="_images/offline.png"><img alt="result" class="align-center" src="_images/offline.png" style="width: 15cm;" /></a>
+<p>Finally we will be shown our recorded values. If you have picked an updating file, the curves will also update.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When a trigger has been raised that starts a new datafile use the green round arrow key to reload your datafile. Otherwise Kst2 will not update with the new file.</p>
+</div>
+<p>For further information about Kst2 try their documentation, forums etc.</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="changelog.html" title="Changelog"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="problems.html" title="Problems"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=cp1252" />
+    
+    <title>Aqserver - Siemens S7 data acquisition server</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - Siemens S7 data acquisition 1a documentation" href="#" />
+    <link rel="next" title="About" href="about.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="aqserver-siemens-s7-data-acquisition-server">
+<h1>Aqserver - Siemens S7 data acquisition server</h1>
+<p>The program is an acquisition tool for Siemens Simatic S7 PLCs.
+It was written using the python-snap7 module from <a class="reference external" href="https://pypi.python.org/pypi/python-snap7/" target="_blank">https://pypi.python.org/pypi/python-snap7/</a> and the snap7 library from <a class="reference external" href="http://snap7.sourceforge.net" target="_blank">http://snap7.sourceforge.net</a> .
+File handling is based on example source code for the book &#8220;Real-World Instrumentation with Python&#8221;.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Homepage:</th><td class="field-body"><a class="reference external" href="http://www.taxis-instruments.de" target="_blank">http://www.taxis-instruments.de</a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Contact:</th><td class="field-body">&lt;aqserver at taxis-instruments dot de&gt;</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Author:</th><td class="field-body">Michael Taxis &lt;michael at taxis-instruments dot de&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>Copyright of this document:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body"><a class="reference external" href="http://creativecommons.org/licenses/by-sa/3.0/" target="_blank">CC BY-SA 3.0</a></td>
+</tr>
+</tbody>
+</table>
+<p>Copyright of the program:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Copyright:</th><td class="field-body"><a class="reference external" href="https://www.gnu.org/licenses/lgpl-3.0-standalone.html" target="_blank">LESSER GNU GENERAL PUBLIC LICENSE 3.0</a></td>
+</tr>
+</tbody>
+</table>
+<p>Please note that soft- and hardware designations and brand names of their respective companies  used in this document are  generally subject to trademark protection or patent protection.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-from-source">Install from source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#install-with-windows-installer">Install with Windows Installer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#manual-installation">Manual installation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration file for data acquisition server</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#settings-in-config-file">Settings in config file</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#aqdata-settings">Aqdata settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#communication-settings">Communication settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#miscellaneous-settings">Miscellaneous settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#trigger-settings">Trigger settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#debug-settings">Debug settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#value-settings">Value settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="options.html">Command line options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#starting-from-a-python-console">Starting from a python console</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#using-windows-installer-version">Using Windows installer version</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="instance.html">Running multiple instances</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problems.html">Problems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="problems.html#frequently-asked-questions">Frequently asked questions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kst.html">Introduction to Kst2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kst.html#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Licensing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="license.html#disclaimer-of-warranty">Disclaimer of Warranty</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             >next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

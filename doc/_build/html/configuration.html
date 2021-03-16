@@ -1,0 +1,480 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Configuration file for data acquisition server &mdash; Aqserver - data acquisition for S7 PLCs</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - data acquisition for S7 PLCs" href="index.html" />
+    <link rel="next" title="Command line options" href="options.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="options.html" title="Command line options"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/ti-schriftzug-sml.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Configuration file for data acquisition server</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#settings-in-config-file">Settings in config file</a><ul>
+<li><a class="reference internal" href="#aqdata-settings">Aqdata settings</a></li>
+<li><a class="reference internal" href="#communication-settings">Communication settings</a></li>
+<li><a class="reference internal" href="#miscellaneous-settings">Miscellaneous settings</a></li>
+<li><a class="reference internal" href="#trigger-settings">Trigger settings</a></li>
+<li><a class="reference internal" href="#debug-settings">Debug settings</a></li>
+<li><a class="reference internal" href="#value-settings">Value settings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="previous chapter">Installation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="options.html"
+                        title="next chapter">Command line options</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/configuration.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="configuration-file-for-data-acquisition-server">
+<h1>Configuration file for data acquisition server<a class="headerlink" href="#configuration-file-for-data-acquisition-server" title="Permalink to this headline">¶</a></h1>
+<p>In order to run Aqserver you need a configuration file where all required parameters for a acquisition from a S7PLC are stored.  When Aqserver is starting, this configuration is scanned, the parameters a re checked for correctness, then the acquisition starts.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Multiline settings must be indented with TAB, see &#8220;remarks&#8221;</p>
+<p>In config file comments start with a &#8220;#&#8221;:
+&#8220;#&#8221; at 1st column of line will be a comment, you can also use it to disable settings. Note
+that always one valid setting must be available</p>
+<p>Use &#8221;;&#8221; for inline comments</p>
+<p>Multiline comments must be indented with TAB, see &#8220;remarks&#8221;:
+If you want to have some text in more than one line, following lines must
+be indented with TAB, see remarks in aqdata settings</p>
+</div>
+<div class="section" id="settings-in-config-file">
+<h2>Settings in config file<a class="headerlink" href="#settings-in-config-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="aqdata-settings">
+<h3>Aqdata settings<a class="headerlink" href="#aqdata-settings" title="Permalink to this headline">¶</a></h3>
+<p>For information purposes, we can set some texts, that will be included in the data file header.
+You can add a text by placing the name starting in the first column followed by a &#8220;=&#8221; and the text you wish to be implemented.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Also all config values are included in the datafile. When you open an de-archived datafile, you can copy these to make the same config file, if you have lost the original one.</p>
+</div>
+<div class="code text highlight-python"><div class="highlight"><pre>########################################################################
+# aqdata settings
+########################################################################
+[aqdata]
+place = somewhere
+
+creator = Michael Taxis
+
+machine = MyMachine
+
+order = 123456
+
+yourText = type whatever you desire
+
+remarks = ; use tab for multiline values
+    trials with double spreader, to get rid of married rolls
+    trials for SF production
+</pre></div>
+</div>
+</div>
+<div class="section" id="communication-settings">
+<h3>Communication settings<a class="headerlink" href="#communication-settings" title="Permalink to this headline">¶</a></h3>
+<p>For communication with S7 we need following parameters:</p>
+<ul class="simple">
+<li>IP address: IP address of the PLC you try to reach. Try a PING before you start!</li>
+<li>rack number: normally is 0</li>
+<li>slot number: normally is number left of CPU in HW configuration, in example in picture below it is 3.</li>
+<li>maximum connection attempts: Program tries to connect to PLC. If it fails after this number of trials/attempts the program stops. Then check your configuration and connection. If the value is set to 0 the program will try forever. This can be useful if you have the program running without supervision. If not sucessful you can still stop it with CTRL-C. When communication is interrupted/disconnected during a recording session, it will try to reconnect. There will be no recording of values when disconnected.</li>
+</ul>
+<img alt="HW config" class="align-center" src="_images/hwconfig.png" />
+<div class="code text highlight-python"><div class="highlight"><pre>########################################################################
+# communication settings
+########################################################################
+[communication]
+
+# setting up communication parameters to S7-PLC
+
+# IP address
+# you can leave several settings , just comment with a leading &quot;#&quot;
+#IP = 192.168.1.107
+IP = 172.16.13.174
+
+# rack number, see HW Config
+RACK = 0
+
+# slot number of CPU, see HW Config
+SLOT = 3
+
+# maximum attempts for connection, 0 is trying forever
+maxattempts = 10
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also try Aqserver with PLCSIM and NetToPlcsim from <a class="reference external" href="http://nettoplcsim.sourceforge.net/">http://nettoplcsim.sourceforge.net/</a> on the same machine.</p>
+</div>
+</div>
+<div class="section" id="miscellaneous-settings">
+<h3>Miscellaneous settings<a class="headerlink" href="#miscellaneous-settings" title="Permalink to this headline">¶</a></h3>
+<p>We need some general settings for aqserver, as follows:</p>
+<ul class="simple">
+<li>delimiter: is the character that separates the recorded values in the data file, normally we use &#8221;;&#8221;. Be careful not to use the decimal separator that is used on your system (so don&#8217;t use &#8216;.&#8217; or &#8216;,&#8217;)!</li>
+<li>datafileprefix: here we can define a name, that is used to identify the data file. It is a prefix, because file name also includes a timestamp e.g.: MyProject20150804_173035.csv.gz</li>
+<li>datafile is the filename, without extension, where actual data are recorded. This is a csv-file. If you intend to run multiple instances of the program, in order to reach different PLCs, make sure that this name is different in all config files!</li>
+<li>autostart: defines whether recording is starting with program start, or is waiting for a start signal</li>
+<li>datapath: here we define were the compressed data files will be stored.</li>
+<li>usedir: defines, whether we use a directory structure as \yyyy\MM\dd\ when storing the archived files.</li>
+<li>scantime: scantime in milliseconds[ms], minimum is limited to 20 ms in program. This time is only an approximation, because it also depends on number of variables to scan, but use it to reduce filesize. The more scans the bigger the file. If you set scantime to 0, the program will read the data as fast as possible (Attention: big data file!). Depending on the number of values scantime of ~10 ms can be reached.</li>
+<li>maxrecords: This number defines the maximum number of records stored to one file. This limit the size of a datafile. Depending on the number of values per record you should check what number is applicable for you.</li>
+</ul>
+<div class="code text highlight-python"><div class="highlight"><pre>########################################################################
+# miscellaneous settings
+########################################################################
+[misc]
+
+# miscellaneous values for setting up the acquisition server
+# value delimiter in storage file
+delimiter = ;
+
+# prefix of data file name, e.g. a customer/project name or whatever
+datafileprefix = MyProject
+
+# data file name for actual data recording, without extension!
+# e.g. if you use &quot;filename&quot;, actual name will be &quot;filename.csv&quot;
+datafile = recording
+
+# autostart: when program is started decide whether acquisition is started(1)
+# immediately or wait for start signal (0)
+autostart = 0
+
+# path for data files, use &quot;\&quot; for directory separation, with &quot;\&quot; at the end !
+# e.g. datapath = D:\mydata\
+datapath = F:\aqdata\MyProject\
+
+# if 1 use directory structure datapath\yyyyy\MM\dd otherwise use only datapath
+usedir = 1
+
+# scantime in milliseconds [ms]
+# if you just put 0 program will scan as fast as possible
+# this will produce rather large data files!
+# depending on number of values this value is just a hint ;-)
+scantime = 100
+
+# maximum number of records
+# to avoid too big data files, a new one will be starfted after this number
+# of recordings
+maxrecords = 50000
+</pre></div>
+</div>
+</div>
+<div class="section" id="trigger-settings">
+<h3>Trigger settings<a class="headerlink" href="#trigger-settings" title="Permalink to this headline">¶</a></h3>
+<p>Trigger settings are used to start a new datafile, when a trigger event occurs. A trigger can also be raised manually by pressing key &#8216;t&#8217; on your keyboard!
+This trigger event is defined by the following three trigger settings:</p>
+<ul class="simple">
+<li>trgsignal: This is the &#8220;name&#8221; of the signal from the value section, that will trigger the event. Copy the name from the value section.</li>
+<li>trgcondition: This the condition for a comparison of the triggersignal with the trigger value. E.g. when the condition is &#8220;==&#8221; then the trigger will be raised, when value of trigger signal and trigger value match</li>
+<li>trgvalue: This is a constant, trgsignal is compared with it, to decide about the trigger event.</li>
+</ul>
+<p>Further 2 values are used to overlap old and new file:</p>
+<ul class="simple">
+<li>pretrg: time that will be recorded to new file BEFORE the trigger in [s]. This is based on setting scantime.</li>
+<li>posttrg: time that will be recorded to old file AFTER the trigger in [s]. This is based on setting scantime.</li>
+</ul>
+<div class="code text highlight-python"><div class="highlight"><pre>########################################################################
+# trigger settings
+########################################################################
+# when trigger condition is matched, then we close the old file after
+# post-trigger time and start the new file and copy pre-trigger time
+# and post-trigger recordings to new file
+#    # condition is, with example:
+# trgsignal trgcondition trgvalue
+# rewind diameter [mm] = 0
+#
+[trigger]
+
+# trigger signal, copy the name of the signal in [values] section,
+# that you want to use as trigger signal
+trgsignal = rewind diameter [mm]
+
+# trigger condition, use &gt;,&gt;=,==, &lt;=,&lt;,!= as condition
+# when conditon is matched, then we close the old file and start a new one
+# trgcondition = &gt;
+# trgcondition = &gt;=
+# trgcondition = ==
+trgcondition = &lt;=
+# trgcondition = &lt;
+# trgcondition = !=
+
+# trigger value, with this value we compare the trigger signal
+trgvalue = 0
+
+# pre-trigger time in seconds [s]
+# will still add pre-trigger/scantime lines to old file after trigger event
+# e.g. pre-trigger is 60 seconds and scantime is 100 ms, then 600 lines
+# will be recorded after trigger event
+pretrg = 30
+
+#post-trigger time in seconds [s]
+# will copy last post-trigger/scantime lines from old to new file
+# e.g. post-trigger is 60 seconds and scantime is 100 ms, then 600 lines will
+# be copied after trigger event
+posttrg = 30
+</pre></div>
+</div>
+</div>
+<div class="section" id="debug-settings">
+<h3>Debug settings<a class="headerlink" href="#debug-settings" title="Permalink to this headline">¶</a></h3>
+<p>The debug settings define whether and how we do some logging to debug the program.</p>
+<p>For debugging we have to define a debug level, that defines what will be logged.</p>
+<p>With level &#8220;0&#8221; we switch off logging completely, with level &#8220;1&#8221; everything will be logged
+Note that  when you restart the program the log directory will be purged,leaving only the latest log-file</p>
+<p>Parameter logfile defines the name of the logfile, without extension.
+Extension will always be &#8221;.log&#8221;</p>
+<p>If parameter logts is 1 everytime we start the program a new log file will be created. If logts is 0 then we will always append to the default log file.</p>
+<div class="code text highlight-python"><div class="highlight"><pre><span class="c">########################################################################</span>
+<span class="c"># debug settings</span>
+<span class="c">########################################################################</span>
+<span class="p">[</span><span class="n">debug</span><span class="p">]</span>
+
+<span class="c"># debug level</span>
+<span class="c"># set logging level to debug, write program actions</span>
+<span class="c"># to logfile</span>
+<span class="c"># 0 - no logging</span>
+<span class="c"># 1 - log INFO messages (default setting)</span>
+<span class="c"># 2 - log WARNING messages</span>
+<span class="c"># 3 - log DEBUG messages</span>
+<span class="c"># 4 - log ERROR messages</span>
+<span class="c"># 5 - log CRITICAL messages</span>
+<span class="c"># 6 - log EXCEPTION messages</span>
+<span class="n">dbglevel</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c"># name of logfile, without extension. Extension will be added as &quot;.log&quot;</span>
+<span class="n">logfile</span> <span class="o">=</span> <span class="n">aqserver</span>
+
+<span class="c"># add timestamp to logfile name 1 = yes, 0 = no</span>
+<span class="c"># if set to 1 a timestamp will be added to the lofile name. pls. note that a</span>
+<span class="c"># new logfile will be created, every time you start the server,</span>
+<span class="c"># when dbglevel is &gt; 0</span>
+<span class="n">logts</span> <span class="o">=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="value-settings">
+<h3>Value settings<a class="headerlink" href="#value-settings" title="Permalink to this headline">¶</a></h3>
+<p>In the config section values, we can list our PLC variables we want to read.</p>
+<p>The definition of these values does not follow the S7 syntax, because our syntax includes the address, the format (bool, int, float) and the size of the variable in bytes (bool, byte, word, double word) in one parameter. Syntax is described in detail below.</p>
+<p>Defining boolean values is a littlebit special, because we always read at least one byte from the PLC. Therefore we split this byte in 8 single booleans. To define which boolean out of 8 we want to record, we have to split the names of the single booleans with a &#8221;,&#8221;.</p>
+<p>If we omit text between commas, then this bool will be read but not recorded to the datafile.</p>
+<p>See the following examples, where we compare S7 syntax with our definition syntax:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">PLC syntax</th>
+<th class="head">Format</th>
+<th class="head">our definition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>DB4615.DBD714</td>
+<td>REAL</td>
+<td>DB4615.DF714</td>
+</tr>
+<tr class="row-odd"><td>ED 4</td>
+<td>DINT</td>
+<td>ED4</td>
+</tr>
+<tr class="row-even"><td>AW 4</td>
+<td>INT</td>
+<td>AW 4</td>
+</tr>
+<tr class="row-odd"><td>DB4615.DBB6</td>
+<td>INT</td>
+<td>DB4615.DB6</td>
+</tr>
+<tr class="row-even"><td>DB4615.DBX6.1</td>
+<td>BOOL</td>
+<td>DB4615.DX6 (byte!)</td>
+</tr>
+</tbody>
+</table>
+<div class="code text highlight-python"><div class="highlight"><pre>########################################################################
+# value settings
+########################################################################
+# here we define the S7 variables we want to read, and their formats
+# here we define the S7 variables that we want to observe
+# use following syntax:
+#
+######### how to define the names: ########################################
+# use config value name with [ ] - brackets to define the unit of the value
+#
+# boolean values:
+# For boolean values (see format X above) a complete byte is read and then
+# split into 8 bits
+# To define names for the single bits use &#39;,&#39; to separate the names, e.g.:
+#
+# bit0,bit1,bit2,bit3,bit4,bit5,bit6,bit7 = DB1234.DX5
+# Ventil 1, Ventil 2, Ventil 3, Ventil 4, Res1, Res2, Res3, Res4 = DB1234.DX5
+#
+# If you do not want all the bits, leave the name empty e.g.:
+#
+# bit0,,bit2,,,,, = DB1234.DX5
+#
+# This reads only bit0 and bit2
+#
+#
+######### how to define the values: ############################################
+# (S7 variable and format)
+# DBn.AFn.x
+#
+# where:
+# - DB is for data blocks or omitted if other area
+# - n is DB number or omitted if other area
+#
+# - . only when data, omitted otherwise
+#
+# - A is area
+#   - D for data
+#   - M or F for flags
+#   - E or I for inputs
+#   - A or Q for outputs
+#   - T for timers
+#   - Z or C for counters
+#
+# - F is format:
+#
+#   - X - for BYTE in BOOL format, followed by byte address:
+#   - n is whole number for byte address
+#     (attention to address ranges of PLC)
+#     will always be split in 8 single booleans
+#
+#   - B - for BYTE in int format, followed by byte address
+#   - n is whole number for byte address
+#   (attention to address ranges of PLC)
+#
+#   - W - for WORD, followed by byte address
+#   - n is whole number for byte address
+#   (attention to address ranges of PLC)
+#
+#   - D - for DOUBLE WORD, followed by byte address
+#   - n is whole number for byte address
+#   (attention to address ranges of PLC)
+#
+#   - F - for DOUBLE WORD in REAL format, followed by byte address
+#   - n is whole number for byte address
+#   (attention to address ranges of PLC)
+#
+#
+[values]
+rewind diameter [mm] = DB4615.DF714
+webspeed actual [m/min] = DB4615.DF574
+vibration left core chuck [mm/s] = DB4614.DF560
+vibration right core chuck [mm/s] = DB4614.DF564
+vibration rider roll [mm/s] = DB4614.DF568
+#Klemmventil UM1,Klemmventil UM2,Klemmventil UM3,Klemmventil UM4,,,, = DB4614.DX564
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="options.html" title="Command line options"
+             >next</a></li>
+        <li class="right" >
+          <a href="installation.html" title="Installation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Last updated on Feb 03, 2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

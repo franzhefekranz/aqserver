@@ -17,3 +17,4 @@ New features:
 * make automatic kst-file from config
 * add unit to config
 * make config check more verbose
+* define pause bit / condition

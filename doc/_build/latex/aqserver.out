@@ -1,0 +1,20 @@
+\BOOKMARK [0][-]{chapter.1}{About}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Installation}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Install from source}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Install with Windows Installer}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Manual installation}{chapter.2}% 5
+\BOOKMARK [0][-]{chapter.3}{Configuration file for data acquisition server}{}% 6
+\BOOKMARK [1][-]{section.3.1}{Prerequisites}{chapter.3}% 7
+\BOOKMARK [1][-]{section.3.2}{Settings in config file}{chapter.3}% 8
+\BOOKMARK [0][-]{chapter.4}{Command line options}{}% 9
+\BOOKMARK [0][-]{chapter.5}{Usage}{}% 10
+\BOOKMARK [1][-]{section.5.1}{Starting from a python console}{chapter.5}% 11
+\BOOKMARK [1][-]{section.5.2}{Using Windows installer version}{chapter.5}% 12
+\BOOKMARK [0][-]{chapter.6}{Running multiple instances}{}% 13
+\BOOKMARK [0][-]{chapter.7}{Problems}{}% 14
+\BOOKMARK [1][-]{section.7.1}{Frequently asked questions}{chapter.7}% 15
+\BOOKMARK [0][-]{chapter.8}{Introduction to Kst2}{}% 16
+\BOOKMARK [1][-]{section.8.1}{Usage}{chapter.8}% 17
+\BOOKMARK [0][-]{chapter.9}{Changelog}{}% 18
+\BOOKMARK [0][-]{chapter.10}{Licensing}{}% 19
+\BOOKMARK [1][-]{section.10.1}{Disclaimer of Warranty}{chapter.10}% 20

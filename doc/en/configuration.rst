@@ -6,8 +6,10 @@ In order to run Aqserver you need a configuration file where all required parame
 Prerequisites
 --------------
 
-Multiline settings must be indented with TAB, see "remarks"
+Use an editor e.g. Notepad to edit the config file.
 
+ .. note:: When you save, make sure you save in ANSI format.
+ 
 In config file comments start with a "#":
 "#" at 1st column of line will be a comment, you can also use it to disable settings. Note
 that always one valid setting must be available

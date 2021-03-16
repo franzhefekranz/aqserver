@@ -1,32 +1,32 @@
 # - *-  coding: utf- 8 - *-
 """
     Siemens S7-400 data acquisition server
-    
+
     This program was written using the python-snap7 module and the snap7 library.
     A configfile must exist (default file is aqserver.cfg) that defines
     communication and other parameters and of course the S7 variables to scan.
     Open this file in your preferred editor and read the comments on how to
     configure.
     Values will be stored to a csv-file, name can be configured, in subdirectory data.
-    When program is stopped, this file will be compressed and stored to a path, 
+    When program is stopped, this file will be compressed and stored to a path,
     that can also be specified in the config file.
-    
+
     Reading data from S7-400 using multireadvar
-    - reading settings for 
+    - reading settings for
         communication: IP, rack and slot
         miscellaneous settings: delimiter for datafile, file-name prefix
         trigger settings
         debug settings
         value settings: name, address, type  (reading from data blocks only!!)
     from config file
-    
-    - write data samples to csv file 
+
+    - write data samples to csv file
     - this file is gzipped when program is stopped by user or trigger occurs
     - close connection
     - close file
 
 """
-#import main libs
+# import main libs
 from time import sleep
 import sys
 import os
@@ -37,15 +37,8 @@ import logging
 import collections
 import random
 import datetime
-
-# Windows
-if os.name == 'nt':
-    from win32com.shell import shell, shellcon
-
-# Posix (Linux, OS X)
-else:
-    pass
-
+# import tarfile
+from progress.bar import Bar
 
 # import snap7 functions - S7 communication library
 import snap7
@@ -63,31 +56,45 @@ import PrgUtils
 # from KbdUtils import *
 from kbhit import *
 
+# Windows
+if os.name == 'nt':
+    from win32com.shell import shell, shellcon
+
+# Posix (Linux, OS X)
+else:
+    pass
+
+
+
 # get system arguments
 ###############################################################################
 # define the config file
 ###############################################################################
 
-if type(PrgUtils.parse_sys_args()) is list or type(PrgUtils.parse_sys_args()) is tuple:
+if isinstance(
+        PrgUtils.parse_sys_args(),
+        list) or isinstance(
+            PrgUtils.parse_sys_args(),
+        tuple):
     configfile = PrgUtils.parse_sys_args()[0]
 else:
     configfile = PrgUtils.parse_sys_args()
 
-# in Windows use My Documents directory    
+# in Windows use My Documents directory
 if os.name == 'nt':
     # check for Aqserver in "My Documents" directory
     userdir = str(shell.SHGetFolderPath(0, shellcon.CSIDL_PERSONAL, None, 0))
-    userdir = userdir.replace("\\","\/")    + "\/Aqserver\/"
+    userdir = userdir.replace("\\", "\/") + "\/Aqserver\/"
 # in Posix use home directory
 else:
     username = PrgUtils.get_username()
-    userdir = "\/home\/" + username + "\/Aqserver\/" 
+    userdir = "\/home\/" + username + "\/Aqserver\/"
 
 # make data directory path
-MyDataDir = userdir + "data\/" 
+MyDataDir = userdir + "data\/"
 
 # make log directory path
-MyLogDir = userdir + "log\/" 
+MyLogDir = userdir + "log\/"
 
 # make directories if not existing
 if not os.path.exists(userdir):
@@ -102,61 +109,62 @@ if not os.path.exists(MyLogDir):
 
 # check configfile
 if not os.path.isfile(configfile):
-    print "config file %s does not exist, or no config filename given.\nUse aqserver --help!\n" %configfile
+    print "config file %s does not exist, or no config filename given.\nUse aqserver --help!\n" % configfile
     sys.exit(0)
 
 ###############################################################################
 # get all settings from configfile
 ###############################################################################
 try:
-    aqdata, com,  misc, value, trigger, dbg = PrgUtils.get_config(configfile)
-except:
-# sorry, no log because logfile not defined yet
-#    logentry = "error in configfile!\nProgram will exit.\n"
-#    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    aqdata, com, misc, value, trigger, dbg = PrgUtils.get_config(configfile)
+except BaseException:    # sorry, no log because logfile not defined yet
+    #    logentry = "error in configfile!\nProgram will exit.\n"
+    #    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
     print "error in configfile!\nProgram will exit.\n"
     sys.exit(0)
-    
+
 ###############################################################################
 # debug settings
 ###############################################################################
 
 # debug level
 dbglevel = int(dbg["dbglevel"])
-if dbglevel > 0  and dbglevel < 2:
+if dbglevel > 0 and dbglevel < 2:
     doInfo = True
 else:
     doInfo = False
-if dbglevel > 0  and dbglevel < 3:
+if dbglevel > 0 and dbglevel < 3:
     doWarning = True
 else:
     doWarning = False
-if dbglevel > 0  and dbglevel < 4:
+if dbglevel > 0 and dbglevel < 4:
     doDebug = True
 else:
     doDebug = False
-if dbglevel > 0  and dbglevel < 5:
+if dbglevel > 0 and dbglevel < 5:
     doError = True
 else:
     doError = False
-if dbglevel > 0  and dbglevel < 6:
+if dbglevel > 0 and dbglevel < 6:
     doCritical = True
 else:
     doCritical = False
 
 # remove the old log files
 # call function to empty the folder
-FileUtils.purgeDir(MyLogDir,1)
+FileUtils.purgeDir(MyLogDir, 1)
 
 # logfile name
 if bool(dbg["logts"]):
-# can't use filename from config, because name has to be unique
-#    logfile = MyLogDir + "\/" + dbg["logfile"] + str(TimeUtils.getTSfName()) +".log"
-    logfile = MyLogDir + "\/" + misc["datafileprefix"] + str(TimeUtils.getTSfName()) +".log" 
+    # can't use filename from config, because name has to be unique
+    # logfile = MyLogDir + "\/" + dbg["logfile"] + str(TimeUtils.getTSfName())
+    # +".log"
+    logfile = MyLogDir + "\/" + \
+        misc["datafileprefix"] + str(TimeUtils.getTSfName()) + ".log"
 else:
-# can't use filename from config, because name has to be unique
-#    logfile = MyLogDir +"\/" + dbg["logfile"] +  + ".log"
-    logfile = MyLogDir +"\/" + misc["datafileprefix"] +  + ".log"
+    # can't use filename from config, because name has to be unique
+    #    logfile = MyLogDir +"\/" + dbg["logfile"] +  + ".log"
+    logfile = MyLogDir + "\/" + misc["datafileprefix"] + + ".log"
 
 ###############################################################################
 # prepare logging
@@ -167,9 +175,9 @@ logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 logger.setLevel(logging.INFO)
 
-#always log program start
+# always log program start
 logentry = "################## program started ###########################"
-logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
+logger.info(" %s: %s" % (TimeUtils.getTS(), logentry))
 logger.setLevel(dbglevel)
 
 
@@ -177,19 +185,19 @@ logger.setLevel(dbglevel)
 if doDebug:
     # communication settings
     logentry = str(com)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
-    #miscellaneous settings
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+    # miscellaneous settings
     logentry = str(misc)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
     # trigger
     logentry = str(trigger)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
     # debug
     logentry = str(dbg)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
     # values
     logentry = str(value)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
 ###############################################################################
 # define communication
@@ -209,14 +217,14 @@ IP = str(com["ip"])
 if CommUtils.is_valid_ipv4_address(IP):
     if doDebug:
         logentry = "successfully checked IP address: " + str(IP)
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 else:
-    print "IP address not valid: %s, program exits!" %IP
+    print "IP address not valid: %s, program exits!" % IP
     if doError:
         logentry = "wrong IP address: " + str(IP) + ", program stopped"
-        logger.error(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.error(" %s: %s" % (TimeUtils.getTS(), logentry))
     sys.exit(0)
-    
+
 # rack number
 RACK = int(com["rack"])
 # slot number
@@ -234,7 +242,7 @@ else:
     usedir = False
 
 fName = str(MyDataDir + "\/" + misc["datafile"] + ".csv")
-
+hName = str(MyDataDir + "\/" + misc["datafile"] + "_header.csv")
 # set the sleep time for every loop
 scantime = float(misc["scantime"]) / 1000
 # minimum scantime is 20 ms
@@ -244,19 +252,14 @@ if scantime < 0.02 or demo:
 
 if doDebug:
     logentry = "scantime in [s]: %f" % scantime
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
 maxrecords = int(misc["maxrecords"])
 
 if doDebug:
     logentry = "maximum number of records: %d" % maxrecords
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
-if int(str(misc["booloffset"])) == 1:
-    booloff = True
-else:
-    booloff = False
-    
 ###############################################################################
 # define trigger settings
 ###############################################################################
@@ -266,26 +269,27 @@ if str(trigger["trgsignal"]) != "0":
     # set the do_trigger flag
     do_trigger = True
     # create the trigger expression
-    trgexpression = str("trgsignal" + str(trigger["trgcondition"]) + str(trigger["trgvalue"]) )
+    trgexpression = str(
+        "trgsignal" + str(trigger["trgcondition"]) + str(trigger["trgvalue"]))
     if doDebug:
         logentry = str(trgexpression)
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
     # calculate number of pre- and post-trigger records
-    prerec = int(int(float(trigger["pretrg"])/scantime))
+    prerec = int(int(float(trigger["pretrg"]) / scantime))
     if doDebug:
         logentry = "pre-trigger records: %d" % prerec
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
-        
-    postrec = int(int(float(trigger["posttrg"])/scantime))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+
+    postrec = int(int(float(trigger["posttrg"]) / scantime))
     if doDebug:
         logentry = "post-trigger records: %d" % postrec
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
     # add pre- and post-records. These will be copied from old to new record file
     # when a trigger occurs
     copyrec = prerec + postrec
-    
+
 else:
     # reset the no_trigger flag
     do_trigger = False
@@ -293,8 +297,8 @@ else:
     copyrec = 0
 # reset the trigger event flag
 triggered = False
-    
-    
+
+
 ###############################################################################
 # connect to PLC
 ###############################################################################
@@ -308,19 +312,19 @@ if not demo:
     while not clientConnected:
         attempts += 1
         try:
-            client.connect(IP,RACK,SLOT)
-        except:
-            print "not connected, %d attempts" %attempts
+            client.connect(IP, RACK, SLOT)
+        except BaseException:
+            print "not connected, %d attempts" % attempts
             pass
         else:
             clientConnected = True
             if doDebug:
                 logentry = "client connected"
-                logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
-        if attempts >= maxattempts and maxattempts!= 0:
+                logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        if attempts >= maxattempts and maxattempts != 0:
             if doError:
                 logentry = "error when trying to connect, program will end!"
-                logger.error(" %s: %s" %(TimeUtils.getTS(), logentry))
+                logger.error(" %s: %s" % (TimeUtils.getTS(), logentry))
             print "error when trying to connect, program will end!"
             sys.exit(0)
 
@@ -331,78 +335,144 @@ if not demo:
 # only 20 values per multiread
 calls = (len(value) // 20) + 1
 
-# remainder 
+# remainder
 remain = len(value) % 20
 
 if doDebug:
-    logentry = "Calls: %d, Remainder: %d Gesamt : %d" % (calls,remain, len(value))
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logentry = "Calls: %d, Remainder: %d Gesamt : %d" % (
+        calls, remain, len(value))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
 # define our items
 lvariables = []
 lformats = []
 lnames = []
+lgains = []
+loffsets = []
 
 for x in range(calls):
-    if x < calls -1:
+    if x < calls - 1:
         lvariables.append((S7DataItem * 20)())
     else:
         lvariables.append((S7DataItem * remain)())
 if doDebug:
     logentry = str(lvariables)
-    logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
 # preset S7 area
-area=0x84
+area = 0x84
 
 # reset loop counters
 cntcalls = 0
 cntitems = 0
-formats =[]
+formats = []
 names = []
+gains = []
+offsets = []
+units = []
 data_items = lvariables[0]
 
-    
+
 # add number and timestamp to file header
-header = "number" + misc["delimiter"] + "timestamp" +  misc["delimiter"]
+header = "number" + misc["delimiter"] + "timestamp" + misc["delimiter"]
 
 
 # loop through values and define the items
 for val in value:
+    temp = str(value[val])
+    # split data address into DB and operand
+    parts = temp.split(',')
     
-    mem = str(value[val])
+    # get the variable        
+    mem = str(parts[0])
+    if doDebug:
+        logentry = str(mem)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+    
     #######################################
     # get area
     #######################################
     name = str(val)
     names.append(name)
     area = get_S7_area(mem)
-    dbnum,length, start, format, hdr = get_data_item(area, mem, name, misc["delimiter"])
+    dbnum, length, start, format, hdr = get_data_item(
+        area, mem, name, misc["delimiter"])
     formats.append(format)
     header = header + hdr
     
+    # get the gain, defaults to 1
+    gain = str(parts[1])
+    gains.append(gain)
     
-    #######################################################################
+    # get the offset, defaults to 0
+    offset = str(parts[2])
+    offsets.append(offset)
+    
+    # get the unit, which is a string (empty for booleans)
+    if format == '>B':
+        if doDebug:
+            logentry = "boolean names: " + str(hdr)
+            logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        # split header to get number of boolean values
+        hdrs = hdr.split(misc["delimiter"])
+        # write delimiter to unit string for all configured bools
+        unit = ((len(hdrs)-1) * str(misc["delimiter"]))
+        units.append(unit)
+    else:
+        unit = parts[3] + str(misc["delimiter"])
+        units.append(unit)
+    if doDebug:
+        logentry = "value: " + str(temp)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        logentry = "name: " + str(name)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        logentry = "gain: " + str(gain)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        logentry = "offset: " + str(offset)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        logentry = "units: " + str(unit)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+    
+    lenname = len(name.split(','))
+    lengain = len(gain.split('-'))
+    lenoffset = len(offset.split('-'))
+    # subtract 1 from length of units because of additional semicolon
+    lenunit = len(unit.split(';')) - 1
+
+    if (lenname != lengain) or (lenname != lenoffset) or (lenname != lenunit):
+        if doError:
+            logentry = "check your value declaration line for " + name + "\n" \
+                + ". Number of names = " + str(lenname) \
+                + ", gains = " + str(lengain) \
+                + ",offsets = " + str(lenoffset) \
+                + " or units = " + str(lenunit) + " do not match!"
+            logger.error(" %s: %s" % (TimeUtils.getTS(), logentry))
+        sys.exit(0)
+
+#######################################################################
     # now we check every single item by reading it once from PLC
     # if we have a problem we exit because of wrong congiguration
     #######################################################################
 
-    configok = True 
-    
+    configok = True
+
     # check only when not in demo
     if not demo:
         try:
             result = client.read_area(area, dbnum, start, length)
-        except:
+        except BaseException:
             if doError:
-                logentry = "Item %s does NOT exist in PLC. area: %d, dbnum: %d, start: %d. length: %d\n" %(mem, area,dbnum,start, length)
-                logger.error(" %s: %s" %(TimeUtils.getTS(), logentry))
+                logentry = "Item %s does NOT exist in PLC. area: %d, dbnum: %d, start: %d. length: %d\n" % (
+                    mem, area, dbnum, start, length)
+                logger.error(" %s: %s" % (TimeUtils.getTS(), logentry))
+                # now print the wrong variable, so we can correct it
+                print logentry
             configok = False
             pass
         else:
             if doDebug:
-                logentry = "Item %s does exist in PLC\n" %mem
-                logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+                logentry = "Item %s does exist in PLC\n" % mem
+                logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
 
     # finally write results in our items as C-type variables for snap7.DLL
     data_items[cntitems].Area = ctypes.c_int32(area)
@@ -417,50 +487,53 @@ for val in value:
 
     if doDebug:
         logentry = "area: %r" % area
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
         logentry = "dbnum: %r" % dbnum
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
         logentry = "start: %r" % start
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
         logentry = "length: %r" % length
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
-    
-    if cntitems >= 20 :
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+        logentry = "Number of names = " + str(lenname) \
+            + ", gains = " + str(lengain) \
+            + ",offsets = " + str(lenoffset) \
+            + " and units = " + str(lenunit)
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+
+    if cntitems >= 20:
         cntitems = 0
-        cntcalls +=1
+        cntcalls += 1
         lvariables.append(data_items)
         lformats.append(formats)
         lnames.append(names)
+        lgains.append(gains)
+        loffsets.append(offsets)
         data_items = lvariables[cntcalls]
         if doDebug:
             logentry = "formats: %r" % formats
-            logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+            logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
         formats = []
         names = []
-    
-if cntitems < 20 :
+        gains = []
+        offsets = []
+
+if cntitems < 20:
     lvariables.append(data_items)
     lformats.append(formats)
     lnames.append(names)
+    lgains.append(gains)
+    loffsets.append(offsets)
     if doDebug:
         logentry = "formats: %r" % formats
-        logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
     formats = []
     names = []
-    
+    gains = []
+    offsets = []
+
 if not configok:
-    print "configuration fault, check most recent logfile %s!\n" %logfile
+    print "configuration fault, check most recent logfile %s!\n" % logfile
     sys.exit(0)
-###############################################################################
-# open record.csv for data recording (writing)
-###############################################################################
-# open file for data output
-myOutFile = FileUtils.ASCIIDataWrite()
-#myOutFile = FileUtils.BinDataWrite()
-# start with new datafile (note "1" at end)
-myOutFile.openOutput('',fName,1)
-
-
 
 ###############################################################################
 # add info strings to record file
@@ -502,39 +575,64 @@ infostr = infostr + "[values]" + "\n"
 for info in value:
     infostr = infostr + str(info) + ": " + str(value[info]) + "\n"
 
-unitstr = ""
+# set unitstr, two semicolons for index and timestamp
+unitstr = ";;"
 hdrname = str(header).split(";")
 
-for info in hdrname:
+for unit in units:
     # create the units here:
-    valname = str(info).split("[")
-    unit = ""
-    if len(valname) > 1:
-        unit = "[" + valname[1]
-    unitstr = unitstr + unit + misc["delimiter"]
+    unitstr = unitstr + unit
 unitstr = unitstr[:-1]
+if doDebug:
+    logentry = "unitstr: " + unitstr
+    logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
+
+
 infostr = infostr + (len(header) * "#") + "\n" + "\n"
-myOutFile.writeStr(infostr,0, 0)
-myOutFile.writeStr(header,0, 0)
-myOutFile.writeStr(unitstr,0, 0)
+###############################################################################
+# open header.csv for storing configuration 
+###############################################################################
+# open file for data output
+myHdrFile = FileUtils.ASCIIDataWrite()
+# start with new file (note "1" at end)
+myHdrFile.openOutput('', hName, 1)
+myHdrFile.writeStr(infostr, 0, 0)
+myHdrFile.closeOutput()
+
+###############################################################################
+# open record.csv for data recording (writing)
+###############################################################################
+# open file for data output
+myOutFile = FileUtils.ASCIIDataWrite()
+#myOutFile = FileUtils.BinDataWrite()
+# start with new datafile (note "1" at end)
+myOutFile.openOutput('', fName, 1)
+myOutFile.writeStr(header, 0, 0)
+myOutFile.writeStr(unitstr, 0, 0)
 myOutFile.closeOutput()
 
-#copy datafile to header file, for header of further datafiles
+# write small header, only names and units
 
-hfile = misc["datafileprefix"] + '_header.csv'
-shutil.copyfile(fName, hfile)
+hFile = misc["datafileprefix"] + '_hdr.csv'
+mySmlHdrFile = FileUtils.ASCIIDataWrite()
+# start with new file (note "1" at end)
+mySmlHdrFile.openOutput('', hFile, 1)
+mySmlHdrFile.writeStr(header, 0, 0)
+mySmlHdrFile.writeStr(unitstr, 0, 0)
+mySmlHdrFile.closeOutput()
+# shutil.copyfile(fName, hfile)
 
 # open datafile for append (note "0" at end)
-myOutFile.openOutput('',fName,0)
+myOutFile.openOutput('', fName, 0)
 
 # set run condition for no exit, first run before exit ;-)
 exitprg = False
 # check for autostart
-if int(misc["autostart"])==1:
+if int(misc["autostart"]) == 1:
     pause = False
 else:
     pause = True
-    
+
 # use cross-platform kbhit for keyboard detection
 kb = KBHit()
 
@@ -545,7 +643,7 @@ trgfile = numfile
 runtime = TimeUtils.Timer()
 totaltime = TimeUtils.Timer()
 
-#display how to stop the program
+# display how to stop the program
 
 # always allow manual trigger...
 #  do_trigger:
@@ -559,11 +657,11 @@ if not demo:
     print 'ESC - Exit program\nP - Pause\nS - Start\nT - Trigger new file\n\nNumber of scans:\n'
 else:
     print '\n*********** Aqserver running in DEMO mode using config file: ***********'
-    print '\n%s\n\n'  % configfile
+    print '\n%s\n\n' % configfile
     print 'ESC - Exit program\nP - Pause\nS - Start\nT - Trigger new file\n\nNumber of scans:\n'
 
 ###############################################################################
-# get prepared to scan    
+# get prepared to scan
 ###############################################################################
 
 # outer loop, exit only with exitprg
@@ -572,61 +670,71 @@ while not exitprg:
 
     # preset some parameters before we start to scan
     # record counter
-    numrec=0
+    numrec = 0
     num_posttrg_recs = numrec + 5
 
     # reset the timer
     runtime1 = runtime.Reset()
-    
+
     # reset manual trigger
     man_trigger = True
+    printme = " files: " + str(numfile + 1) + " | scans: "
+    # print printme
+    bar = Bar(printme,suffix = '%(index)d/%(max)d  - %(elapsed)ds', max=maxrecords)
 
-        
-
-    ###############################################################################
+    ##########################################################################
     # now start the scan loop
-    ###############################################################################
-    # run the loop as long as no trigger event has occured 
+    ##########################################################################
+    # run the loop as long as no trigger event has occured
     # or the number of actual records is smaller than number of post trigger limit
     # or when we will have no trigger
 
-    while (not triggered or (numrec < num_posttrg_recs) or (not do_trigger and not man_trigger) or (trgfile != numfile)) and not exitprg and (numrec < maxrecords):
-    
-        prnrem = numrec % 10
-        if (prnrem == 1):
-#            runtime1 = runtime.GetTotal()
-#            totaltime1 = totaltime.GetTotal()
-#            fitime = str(datetime.timedelta(seconds=runtime1))
-#            totime = str(datetime.timedelta(seconds=totaltime1))
-#            timestr = " file time: %s,  total time: %s" %(fitime, totime)
+    while (
+        not triggered or (
+            numrec < num_posttrg_recs) or (
+            not do_trigger and not man_trigger) or (
+                trgfile != numfile)) and not exitprg and (
+                    numrec < maxrecords):
+
+        # prnrem = numrec % 10
+        # if (prnrem == 1):
+            #            runtime1 = runtime.GetTotal()
+            #            totaltime1 = totaltime.GetTotal()
+            #            fitime = str(datetime.timedelta(seconds=runtime1))
+            #            totime = str(datetime.timedelta(seconds=totaltime1))
+            #            timestr = " file time: %s,  total time: %s" %(fitime, totime)
             # print loop number, so we see program is active, always in same line!
-#            printme = str("scans: " + str(numrec - 1) + " files: " + str(numfile + 1)  + timestr)
-            printme = str("scans: " + str(numrec - 1) + " files: " + str(numfile + 1))
-            digits = len(printme)
+            #            printme = str("scans: " + str(numrec - 1) + " files: " + str(numfile + 1)  + timestr)
+            # printme = str("scans: " + str(numrec - 1) +
+                          # " files: " + str(numfile + 1))
+            # digits = len(printme)
             # get number of backspaces to start printing at 1st column
-            delete = "\b" * (digits + 1)
+            # delete = "\b" * (digits + 1)
             # always print in same line
-            print "\r{0}{1:{2}}".format(delete, printme, digits),
-        
+            # print "\r{0}{1:{2}}".format(delete, printme, digits),
+
         # use interval for recording (sleep for x seconds)
-        
+
         if (int(misc["scantime"]) > 0) or demo:
             sleep(scantime)
-        
-        # check if recording is paused 
+
+        # check if recording is paused
         # Tip: can be recognized when loop number is not counting
         if not pause:
-            
-            
+
             # increase record counter
             numrec += 1
+            bar.next()
             fnum = ""
-            # now loop through our calls, (multivar only 20 variables per call!)
-            for y in range(calls): 
+            # now loop through our calls, (multivar only 20 variables per
+            # call!)
+            for y in range(calls):
                 data_items = lvariables[y]
                 formats = lformats[y]
                 names = lnames[y]
-            
+                gains = lgains[y]
+                offsets = loffsets[y]
+
                 # create buffers to receive the data
                 # use the Amount attribute on each item to size the buffer
                 for di in data_items:
@@ -637,7 +745,7 @@ while not exitprg:
                     pBuffer = ctypes.cast(ctypes.pointer(buffer),
                                           ctypes.POINTER(ctypes.c_uint8))
                     di.pData = pBuffer
-                    
+
                 if not demo:
                     # reset connection attempts, when connected
                     if clientConnected:
@@ -651,55 +759,63 @@ while not exitprg:
                     if not demo:
                         # connect, if not already connected (after error)
                         if not clientConnected:
-                            print "\nnot connected, %d attempts" %attempts
+                            print "\nnot connected, %d attempts" % attempts
                             if doError:
                                 logentry = "reconnecting client"
-                                logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
-                            client.connect(IP,RACK,SLOT)
+                                logger.info(" %s: %s" %
+                                            (TimeUtils.getTS(), logentry))
+                            client.connect(IP, RACK, SLOT)
                             clientConnected = True
                         result, data_items = client.read_multi_vars(data_items)
-                        
+
                         for di in lvariables[y]:
                             check_error(di.Result)
 
-                except:
-                    # disconnect on error
+                except BaseException:                    # disconnect on error
                     attempts += 1
                     if clientConnected:
                         if doError:
                             logentry = "disconnecting client, because of raised exception"
-                            logger.error(" %s: %s" %(TimeUtils.getTS(), logentry))
+                            logger.error(" %s: %s" %
+                                         (TimeUtils.getTS(), logentry))
                         client.disconnect()
                         clientConnected = False
                         numrec -= 1
                     pass
 
-                else: # ..try .. except .. else
+                else:  # ..try .. except .. else
                     # unpack and print the result of each read
                     for i in range(0, len(data_items)):
                         fmt = formats[i]
                         nm = names[i]
                         di = data_items[i]
-                        myByteStr =""
+                        gn = gains[i]
+                        of = offsets[i]
+                        myByteStr = ""
                         if not demo:
-                            myBytes = ''.join([chr(di.pData[i]) for i in range(0, di.Amount)])
+                            myBytes = ''.join([chr(di.pData[i])
+                                               for i in range(0, di.Amount)])
                         else:
                             if fmt == '>B':
                                 # create boolean byte format
-                                myBytes = struct.pack(fmt,random.randint(0, 255))
+                                myBytes = struct.pack(
+                                    fmt, random.randint(0, 255))
                             elif fmt == '>b':
                                 # create byte as integer
-                                myBytes = struct.pack(fmt,random.randint(-128, 127))
+                                myBytes = struct.pack(
+                                    fmt, random.randint(-128, 127))
                             elif fmt == '>h':
                                 # create random word
-                                myBytes = struct.pack(fmt,random.randint(-32767, 32767))
+                                myBytes = struct.pack(
+                                    fmt, random.randint(-32767, 32767))
                             elif fmt == '>i':
                                 # create double word
-                                myBytes = struct.pack(fmt,random.randint(-16777216, 16777216))
+                                myBytes = struct.pack(
+                                    fmt, random.randint(-16777216, 16777216))
                             elif fmt == '>f':
                                 # create float
-                                myBytes = struct.pack(fmt,random.uniform(-16777216, 16777216))
-                            
+                                myBytes = struct.pack(
+                                    fmt, random.uniform(-16777216, 16777216))
 
                         # Handle boolean variables
                         if fmt == '>B':
@@ -707,53 +823,86 @@ while not exitprg:
                             mbyte = int(struct.unpack(fmt, myBytes)[0])
                             # get the bit names
                             bitname = nm.split(',')
-                            offset = 0
-                            for j in range(0,len(bitname)):
+                            gain = gn.split('-')
+                            ofs = of.split('-')
+                            if doDebug:
+                                logentry = "Längen: " \
+                                     + str(nm)\
+                                     + " " + str(gn)\
+                                     + " " + str(of)
+                                logger.debug(" %s: %s" %
+                             (TimeUtils.getTS(), logentry))
+                            for j in range(0, len(bitname)):
                                 # check value of lowest bit
                                 if bool(mbyte & 1):
-                                    # check if there is a name for the bit (name NOT empty)
+                                    # check if there is a name for the bit
+                                    # (name NOT empty)
                                     if bitname[j] != "":
-                                        bitval = 1 + offset
-                                        if booloff:
-                                            myByteStr = myByteStr + str(bitval) + misc["delimiter"]
-                                            offset += 2
-                                        else:
-                                            # if so, append value 1 to the string
-                                            myByteStr = myByteStr + "1" + misc["delimiter"]
+                                        if doDebug:
+                                            logentry = "Längen: " \
+                                                 + str(len(bitname))\
+                                                 + " " + str(len(gain))\
+                                                 + " " + str(len(ofs))
+                                            logentry = logentry + "counter = "\
+                                                + str(j) + "bitname: " \
+                                                + bitname[j] + ", gain: " \
+                                                + gain[j] +", offset: " \
+                                                +ofs[j] 
+                                            logger.debug(" %s: %s" %
+                                         (TimeUtils.getTS(), logentry))
+                                        bitval = 1 * int(gain[j]) + int(ofs[j])
+                                        myByteStr = myByteStr + \
+                                            str(bitval) + misc["delimiter"]
                                 else:
-                                    # check if there is a name for the bit (name NOT empty)
+                                    # check if there is a name for the bit
+                                    # (name NOT empty)
                                     if bitname[j] != "":
-                                        bitval = offset
-                                        if booloff:
-                                            myByteStr = myByteStr + str(bitval) + misc["delimiter"]
-                                            offset += 2
-                                        else:
-                                            # if so, append value 0 to the string
-                                            myByteStr = myByteStr + "0" + misc["delimiter"]
+                                        # bitval = offset
+                                        if doDebug:
+                                            logentry = "Längen: " \
+                                                 + str(len(bitname))\
+                                                 + " " + str(len(gain))\
+                                                 + " " + str(len(ofs))
+                                            logentry = logentry + "counter = "\
+                                                + str(j) + "bitname: " \
+                                                + bitname[j] + ", gain: " \
+                                                + gain[j] +", offset: " \
+                                                +ofs[j] 
+                                            logger.debug(" %s: %s" %
+                                         (TimeUtils.getTS(), logentry))
+                                        bitval = int(ofs[j])
+                                        myByteStr = myByteStr + \
+                                            str(bitval) + misc["delimiter"]
                                 # shift byte to the right for next bit
                                 mbyte = mbyte >> 1
                         else:
-                            myByteStr = str(struct.unpack(fmt, myBytes)[0])  + misc["delimiter"]
+                            myByteStr = str((float(struct.unpack(fmt, myBytes)[
+                                            0])) * float(gn)+float(of)) + misc["delimiter"]
 
                         fnum = fnum + myByteStr
-                        
+
                         # check the trigger condition
-                        if do_trigger and nm == str(trigger["trgsignal"]) and not triggered:
-                            trgsignal = float(str(struct.unpack(fmt, myBytes)[0]))
+                        if do_trigger and nm == str(
+                                trigger["trgsignal"]) and not triggered:
+                            trgsignal = float(
+                                str(struct.unpack(fmt, myBytes)[0]))
                             if eval(trgexpression):
                                 triggered = True
                                 if postrec > 0:
                                     num_posttrg_recs = numrec + postrec
                                     if doInfo:
                                         logentry = 'value trigger !! Waiting for post-trigger records'
-                                        logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
+                                        logger.info(" %s: %s" % (
+                                            TimeUtils.getTS(), logentry))
                                 else:
                                     num_posttrg_recs = numrec
                                     if doInfo:
                                         logentry = 'value trigger !! No post-trigger records'
-                                        logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
-                        elif (do_trigger and nm == str(trigger["trgsignal"]) and triggered and (trgfile != numfile)) or man_trigger:  
-                            trgsignal = float(str(struct.unpack(fmt, myBytes)[0]))
+                                        logger.info(" %s: %s" % (
+                                            TimeUtils.getTS(), logentry))
+                        elif (do_trigger and nm == str(trigger["trgsignal"]) and triggered and (trgfile != numfile)) or man_trigger:
+                            trgsignal = float(
+                                str(struct.unpack(fmt, myBytes)[0]))
                             if not eval(trgexpression) and not man_trigger:
                                 triggered = False
                                 num_posttrg_recs = numrec + 1
@@ -762,54 +911,56 @@ while not exitprg:
                         # so we do not end, when not yet triggered
                         if not triggered:
                             num_posttrg_recs = numrec + 1
-                        
+
                     # write record after we have read all values
                 if not demo:
                     if not clientConnected:
                         break
-            
+
             myOutFile.writeStr(fnum, misc["delimiter"], 1, 1)
-            
+
         # check for ESC key to end recording and further keys...
 
         if kb.kbhit():
             pressedKey = ord(kb.getch())
             # check for keyboard EXIT
-            if pressedKey == 27 or (attempts >= maxattempts and maxattempts !=0):    # 27 = ESC
+            # 27 = ESC
+            if pressedKey == 27 or (
+                    attempts >= maxattempts and maxattempts != 0):
                 exitprg = True
             # check for keyboard PAUSE
             if pressedKey == 112 or pressedKey == 80:    # 112 = p, 80 = P
                 pause = True
             # check for keyboard START
-            if pressedKey == 115 or pressedKey == 83: # 115 = s, 83 = S
+            if pressedKey == 115 or pressedKey == 83:  # 115 = s, 83 = S
                 pause = False
             # check for keyboard TRIGGER
-            if pressedKey == 116 or pressedKey == 84 and not triggered: # 116 = t, 84 = T
+            if pressedKey == 116 or pressedKey == 84 and not triggered:  # 116 = t, 84 = T
                 triggered = True
                 num_posttrg_recs = numrec
                 man_trigger = True
                 if doInfo:
                     logentry = 'Keyboard trigger !!'
-                    logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
-                
+                    logger.info(" %s: %s" % (TimeUtils.getTS(), logentry))
+
     # end of while loop for scanning (ended with trigger or exitprg)
-    print ('\n')            
+    print ('\n')
     runtime1 = runtime.GetTotal()
     totaltime1 = totaltime.GetTotal()
 
     if doInfo:
         if numrec > 0:
-            logentry = str(numrec) + ' values, file runtime: ' + str(runtime1) +' [s], average: ' + str(runtime1 / numrec) 
-            logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
-
+            logentry = str(numrec) + ' values, file runtime: ' + \
+                str(runtime1) + ' [s], average: ' + str(runtime1 / numrec)
+            logger.info(" %s: %s" % (TimeUtils.getTS(), logentry))
 
     # close file
     myOutFile.closeOutput()
-    
+
     # define files
     # first we have to make the correct path, replace \ with \/
     datapath = str(misc["datapath"])
-    datapath = datapath.replace("\\","\/\/")
+    datapath = datapath.replace("\\", "\/\/")
 
     # check path
     if os.path.exists(datapath):
@@ -827,15 +978,15 @@ while not exitprg:
         fNameComp = datapath + misc["datafileprefix"]
         if doDebug:
             logentry = "file name : " + str(fName)
-            logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+            logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
             logentry = "compressed file name : " + str(fNameComp)
-            logger.debug(" %s: %s" %(TimeUtils.getTS(), logentry))
+            logger.debug(" %s: %s" % (TimeUtils.getTS(), logentry))
     else:
-        print "path does not exist: %s" %str(misc["datapath"])
-        print "using %s\/ instead!" %MyDataDir
+        print "path does not exist: %s" % str(misc["datapath"])
+        print "using %s\/ instead!" % MyDataDir
         if doWarning:
             logentry = "path does not exist: " + datapath
-            logger.warning(" %s: %s" %(TimeUtils.getTS(), logentry))
+            logger.warning(" %s: %s" % (TimeUtils.getTS(), logentry))
         datapath = MyDataDir + "\/"
         if usedir:
             year, month, day = TimeUtils.getYMD()
@@ -848,26 +999,35 @@ while not exitprg:
             datapath = datapath + day + "\/"
             if not os.path.exists(datapath):
                 os.mkdir(datapath)
-        fName = str(MyDataDir + "\/" + misc["datafile"] + ".csv")
-        fName2 = str(MyDataDir + "\/" + "finished.csv")
+#        fName = str(MyDataDir + "\/" + misc["datafile"] + ".csv")
+#        fName2 = str(MyDataDir + "\/" + "finished.csv")
         fNameComp = str(datapath + "\/" + misc["datafileprefix"])
 
-
     inFile = fName
+    # tarFileName = fNameComp + TimeUtils.getTSfName() + ".tar.gz"
+    # headerOutFile = str(datapath + "\/" + misc["datafileprefix"] + TimeUtils.getTSfName() + "_header.csv"
+    # dataOutFile = misc["datafileprefix"] + TimeUtils.getTSfName() + ".csv"
     outFile = fNameComp + TimeUtils.getTSfName() + ".csv" + '.gz'
-
+    
+    # add header and datafile to tar file
+    # tar.addfile(tarfile.TarInfo("myfilename.txt"), open("/path/to/filename.txt"))
+    # archive = tarfile.open(tarFileName, "w|gz")
+    # archive.addfile(tarfile.TarInfo(headerOutFile), open(hName))
+    # archive.addfile(tarfile.TarInfo(dataOutFile), open(fName))
+    # archive.add(fName, TarInfo(dataOutFile))
+    # archive.close()
     # save current recording as compressed file with timestamp in filename
-    FileUtils.compressFile(inFile,outFile)
+    FileUtils.compressFile(inFile, outFile)
     if doInfo:
-        logentry = 'created archive: ' + outFile 
-        logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
+        logentry = 'created archive: ' + outFile
+        logger.info(" %s: %s" % (TimeUtils.getTS(), logentry))
 #     print 'created archive: %s\n' % outFile
 
     if not exitprg and (triggered or numrec >= maxrecords):
         tempfile1 = misc["datafileprefix"] + '_temp1.csv'
         tempfile2 = misc["datafileprefix"] + '_temp2.csv'
         tempfile3 = misc["datafileprefix"] + '_temp3.csv'
-        headerfile = misc["datafileprefix"] + '_header.csv'
+        headerfile =  hFile # misc["datafileprefix"] + '_hdr.csv'
         os.system('cls' if os.name == 'nt' else 'clear')
         if not demo:
             print '\n***************** Aqserver running using config file: *****************'
@@ -875,7 +1035,7 @@ while not exitprg:
             print 'ESC - Exit program\nP - Pause\nS - Start\nT - Trigger new file\n\nNumber of scans:\n'
         else:
             print '\n*********** Aqserver running in DEMO mode using config file: ***********'
-            print '\n%s\n\n'  % configfile
+            print '\n%s\n\n' % configfile
             print 'ESC - Exit program\nP - Pause\nS - Start\nT - Trigger new file\n\nNumber of scans:\n'
 
         # print '\nESC - Exit program\nP - Pause\nS - Start\nT - Trigger new file\n\n number of scans:\n'
@@ -886,37 +1046,39 @@ while not exitprg:
         # remove old datafile
         # os.remove(fName)
         # make the new datafile
-        PrgUtils.fileAppend(tempfile3,headerfile,tempfile2,False,True)
+        PrgUtils.fileAppend(tempfile3, headerfile, tempfile2, False, True)
         # open datafile for append (note "0" at end)
-        shutil.copy2(tempfile3,fName)
-        myOutFile.openOutput('',fName,0, copyrec)
+        shutil.copy2(tempfile3, fName)
+        myOutFile.openOutput('', fName, 0, copyrec)
         numfile += 1
         man_trigger = False
         triggered = False
         num_posttrg_recs = numrec + 1
         trgfile = numfile
+        bar.finish()
 
-            
 # end of while loop, with exitprg
-    
+
 
 if not demo:
-    #disconnect PLC
+    # disconnect PLC
     client.disconnect()
     client.destroy()
 
 # delete temporary files
 tempfile3 = misc["datafileprefix"] + '_temp3.csv'
-headerfile = misc["datafileprefix"] + '_header.csv'
+headerfile = hFile #misc["datafileprefix"] + '_header.csv'
 if os.path.isfile(headerfile):
     os.remove(headerfile)
 if os.path.isfile(tempfile3):
     os.remove(tempfile3)
+    
+headerOutFile = str(datapath + "\/" + misc["datafileprefix"] + TimeUtils.getTSfName() + "_header.csv.gz")
+FileUtils.compressFile(hName, headerOutFile)
 
-#always log program end
+# always log program end
 logger.setLevel(logging.INFO)
 logentry = "################## program stopped by user ###################"
-logger.info(" %s: %s" %(TimeUtils.getTS(), logentry))
-    
-print "Good bye from aqserver..."
+logger.info(" %s: %s" % (TimeUtils.getTS(), logentry))
 
+print "Good bye from aqserver..."

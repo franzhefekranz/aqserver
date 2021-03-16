@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=cp1252" />
+    
+    <title>Problems</title>
+    
+    <link rel="stylesheet" href="_static/nature.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - Siemens S7 data acquisition 1a documentation" href="index.html" />
+    <link rel="next" title="Introduction to Kst2" href="kst.html" />
+    <link rel="prev" title="Running multiple instances" href="instance.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="kst.html" title="Introduction to Kst2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="instance.html" title="Running multiple instances"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="problems">
+<h1>Problems</h1>
+<p>When program exits unexspected or with a message, or when program crashes, then you should turn on debugging. By default debugging is off. To run the program with debugging enabled open your config file and set
+configuration value &#8220;dbglevel&#8221; to a value &gt;0. (See below). 1 for INFO is the most verbose level. If you face problems / errors set at least to 3.</p>
+<div class="code text highlight-python"><div class="highlight"><pre><span class="c">###############################################################################</span>
+<span class="c"># debug settings</span>
+<span class="c">###############################################################################</span>
+<span class="p">[</span><span class="n">debug</span><span class="p">]</span>
+
+<span class="c"># debug level</span>
+<span class="c"># set logging level to debug, write program actions</span>
+<span class="c"># to logfile</span>
+<span class="c"># 0 - no logging</span>
+<span class="c"># 1 - log INFO messages (default setting)</span>
+<span class="c"># 2 - log WARNING messages</span>
+<span class="c"># 3 - log DEBUG messages</span>
+<span class="c"># 4 - log ERROR messages</span>
+<span class="c"># 5 - log CRITICAL messages</span>
+<span class="c"># 6 - log EXCEPTION messages</span>
+<span class="n">dbglevel</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Then you should start the program again and after program has ended (again) you should check the log file in the sub directory log. There you should find some more detailed information why the program won&#8217;t run.
+Adjust (probably) your configuration and try to run again.</p>
+<p>Problems can be caused by:</p>
+<ul class="simple">
+<li>PLC cannot be reached with communication parameters provided</li>
+<li>value in your list does not exist in PLC</li>
+<li>typo in configuration values</li>
+</ul>
+<p>If you still can&#8217;t manage to make it run, send a copy of your logfile and the config file to my mail address (aqserver at taxis-instruments dot de).</p>
+<div class="section" id="frequently-asked-questions">
+<h2>Frequently asked questions</h2>
+<p>None so far. This will be updated as questions arise. Post your questions in the contact form on my homepage or send mail to  &lt;aqserver at taxis-instruments dot de&gt;</p>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="kst.html" title="Introduction to Kst2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="instance.html" title="Running multiple instances"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver - Siemens S7 data acquisition 1a documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

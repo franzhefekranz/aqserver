@@ -79,7 +79,7 @@ def get_config(cfgfile):
 def fileCopyTrgLines(infile, outfile, numlines):
     """
     ###############################################################################
-    # copies the 'overlapping' lines from old to ne data file after a trigger event
+    # copies the 'overlapping' lines from old to new data file after a trigger event
     # lines number will be rewritten starting with 1
     ###############################################################################
     """

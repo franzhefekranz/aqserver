@@ -1,0 +1,45 @@
+[OPTIONS]
+Binary TOC=No
+Binary Index=No
+Compiled file=aqserver.chm
+Contents file=aqserver.hhc
+Default Window=aqserver
+Default topic=index.html
+Display compile progress=No
+Full text search stop list file=aqserver.stp
+Full-text search=Yes
+Index file=aqserver.hhk
+Language=0x409
+Title=Aqserver - Siemens S7 data acquisition 1a documentation
+
+[WINDOWS]
+aqserver="Aqserver - Siemens S7 data acquisition 1a documentation","aqserver.hhc","aqserver.hhk","index.html","index.html",,,,,0x63520,220,0x10384e,[0,0,1024,768],,,,,,,0
+
+[FILES]
+about.html
+changelog.html
+configuration.html
+genindex.html
+index.html
+installation.html
+instance.html
+kst.html
+license.html
+options.html
+problems.html
+usage.html
+_static\ajax-loader.gif
+_static\basic.css
+_static\comment-bright.png
+_static\comment-close.png
+_static\comment.png
+_static\down-pressed.png
+_static\down.png
+_static\file.png
+_static\minus.png
+_static\nature.css
+_static\offline.PNG
+_static\plus.png
+_static\pygments.css
+_static\up-pressed.png
+_static\up.png

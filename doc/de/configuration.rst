@@ -6,7 +6,10 @@ Zum Starten des Programms  wird eine Konfigurationsdatei benötigt, in der alle 
 Regeln in der Konfigurationsdatei
 ---------------------------------
 
-Einstellungen über mehrere Zeilen müssen mit TAB eingerückt werden, siehe unten Beispiel "remarks".
+Benutze eine Editor wie z.B. Notepad um die Konfigurationsdatei zu bearbeiten.
+
+ .. note:: Wenn die Datei gespeichert wird, vergewissere dich, dass im ANSI Format gespeichert wird.
+
 
 In der Konfigurationsdatei starten Kommentare mit "#":
 
@@ -106,7 +109,15 @@ Wir brauchen ein paar grundsätzliche Einstellungen für Aqserver:
 * usedir: definiert ob wir eine Verzeichnisstruktur (\\JJJJ\\MM\\TT\\)zur Ablage der Archive verwenden.
 * scantime: Zykluszeit in [ms], minimale Zykluszeit ist auf 20 ms im Programm begrenzt. Die Zeit ist nur eine ungefähre Angabe und ist auch von der Anzahl der zu lesenden Variablen abhängig. Der Wert kann verwendet werden um die Dateigröße zu reduzieren. Je kleiner der Wert umso größer wird die Datei. Wird der Wert auf "0" gesetzt, werden die Daten so schnell wie möglich gelesen (Vorsicht: große Datei!). Je nach Anzahl der Variablen können Zykluszeiten bis ~10 ms erreicht werden. 
 * maxrecords: Diese Zahl definiert die maximale Anzahl der Aufzeichnungen in einer Datei. Damit kann die Größe der Datei begrenzt werden. In Abhängigkeit von der Anzahl der Variablen sollte geprüft werden, welcher Wert hier anwendbar ist.
-* booloffset: wenn dieserWert auf 1 gesetzt wird, wird zu den Bits in einem Byte ein Offset addiert, wie folgt:
+
+
+.. note:: Der nächste Einstellwert "booloffset" ist nicht mehr in Verwendung und kann gelöscht werden
+          Es wird statttdessen die Gain-/Offset-/Uniteinstellung bei den Werten verwendet
+
+
+
+* booloffset: wenn dieser Wert auf 1 gesetzt wird, wird zu den Bits in einem Byte ein Offset addiert, wie folgt:
+
     Wert + Bit Nummer * 2
      
     Dadurch können die Bits in Kst in einem Plot angezeigt werden ohne zu überlappen
@@ -175,6 +186,9 @@ Wir brauchen ein paar grundsätzliche Einstellungen für Aqserver:
     # to avoid too big data files, a new one will be started after this number
     # of recordings
     maxrecords = 50000
+
+    # ATTENTION: value boolsoffset has been replaced by gain/offset/unit in value settings
+    #            Do not enable anymore (though it doesn't hurt...)
 
     # switch for offset of boolean values
     # if 1 then boolean values in a byte (see values settings) will be offset by 2 as follows:
@@ -316,6 +330,32 @@ Die Definition der Adresse folgt allerdings nicht der S7 Syntax, da unsere Synta
 Die Definition von booleschen Variablen ist etwas speziell, da die kleinste Größe die gelesen werden kann, ein Byte ist. Deshalb wird ein byte in 8 einzelne boolesche Variablen aufgesplittet.
 Um festzulegen welches bool von diesen 8 aufgezeichnet werden soll, müssen die Namen der einzelnen booleschen Variablen mmit einem "," getrennt werden (in einer Zeile). Wird dann der Text zwischen 2 Kommas weggelassen, wird diese Variable zwar gelesen, jedoch nicht in die Datendatei geschrieben.
 
+Einstellung von Verstärkung, Verschiebung und Einheit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+Für jeden Wert muss jetzt eine Verstärkung (Gain), eine Verschiebung (Offset) und eine Einheit eingegeben werden.
+Damit kann z.B. bei boolschen Werten erreicht werden, dass die Anzeige von mehreren Bools in einem Diagramm so dargestellt wird, dass sich die angezeigten Kurven nicht überschneiden.
+Standardmäßig ist für die Verstärkung 1 und für den Offset 0 eingestellt, d.h. es wird der aus der Steuerung gelesenen Wert abgespeichert. Bei anderen Werten für Verstärkung und Offset ergibt sich der abgespeicherte Wert aus folgender Formel:
+
+.. note:: abgespeicherter Wert = gelesener Wert * Verstärkung + Verschiebung
+
+Bei numerischen Werten, können die Werte für Verstärkung und Verschiebung auch Nachkommestellen haben. Bei Boolschen Werten sind für Verstärkung und Verschiebuing nur ganzzahlige Werte zulässig
+
+Für einen numerischen Wert sieht die Deklarationszeile z.B. wie folgt aus:
+
+name = DB123.DF345, 2.0, 24.0, kg/m³
+
+Die Einheit bitte nicht in Klammern schreiben, da Kst damit nichts anfangen kann und evtl. Probleme verursacht.
+
+Für boolsche Werte sind für Verstärkung und Verschiebung jeweils 8 Werte anzugeben, da wir ja immer nur ein Byte lesen können.
+Diese acht Werte sind jeweils durch einen Bindestrich zu trennen. Das Ganze sieht dann so aus:
+
+Name1, Name2, Name3, Name4, Name5, Name6, Name7, Name8 = AB9, 1-1-1-1-1-1-1-1, 0-0-0-0-0-0-0-0,
+
+Siehe dazu auch den nachfolgenden Ausschnitt aus der config-Datei, wo die Werteangabe auch nochmal beschrieben wird. 
+
+.. note:: Eine Einheit für Boolsche Werte muss nicht angegeben werden. Es ist jedoch nach der Eingabe der Verschiebungswerte ein Komma zu setzen!
+
 Zum besseren Verständnis folgend eine Tabelle, wo wir die S7 Syntax mit unserer Syntax vergleichen:
 
 .. table::
@@ -337,7 +377,8 @@ Zum besseren Verständnis folgend eine Tabelle, wo wir die S7 Syntax mit unserer
     +-------------------------+-------------------------+-------------------------+
 
 
-    
+
+
 
 .. code:: text
 
@@ -409,10 +450,96 @@ Zum besseren Verständnis folgend eine Tabelle, wo wir die S7 Syntax mit unserer
     #   (attention to address ranges of PLC)
     #
     #
+    ###### how to define gain, offset and unit ####################################
+    # after the S7 variable we must define a gain, an offset and the unit for 
+    # this value. To do so, we add a comma ',' (without colons) after the S7 variable.
+    # Thereafter we give a value for the gain the value is multiplied with. If you
+    # want just the original value, set the gain to 1 (which is the default).
+    # Then put another comma followed by the offset. The offset is added to the product
+    # of value and gain. After another value we put a string for the unit. Don't use
+    # brackets or parentheses as this can cause problems later in KST2.
+    # Here an example for a value definition:
+    #
+    # torque Motor 1 = DB4147.DD1248,1,0,Nm
+    # --------------   ------------- - - --
+    # |                |             | | |
+    # |                |             | | +-unit
+    # |                |             | +-offset
+    # |                |             +-gain
+    # |                +-S7 variable
+    # + name
+
+    # For BOOL variables the settings for gain, offset and unit is a little bit tricky.
+    # We have to set gain and offset for 8 values in a row. 
+    #
+    # BUT THEY MUST BE SEPARATED WITH A DASH '-'
+    # 
+    # This means gain for boolean variables is something like: 
+    #
+    # 1-1-1-1-1-1-1-1  (when using default value 1)
+    #
+    # Set the next comma followed by the values for the offset, in the same manner:
+    #
+    # 0-0-0-0-0-0-0-0 (when using default value 0)
+    #
+    # Offsets will be added to the product of value and gain. If you want to keep the
+    # original value set all offsets to 0 (0 is the default for offsets). 
+    # Put another comma after the offsets. We omit the units which don't make sense
+    # for boolean values. Here an example for a boolean value definition:
+    #
+    #  A,B,C,D,E,F,G,H = AX9,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    #  - - - - - - - -   --- - - - - - - - - - - - - - - - -
+    #  | | | | | | | |   |   | | | | | | | | | | | | | | | |
+    #  | | | | | | | |   |   | | | | | | | | | | | | | | | +-8th offset
+    #  | | | | | | | |   |   | | | | | | | | | | | | | | +-7th offset
+    #  | | | | | | | |   |   | | | | | | | | | | | | | +-6th offset
+    #  | | | | | | | |   |   | | | | | | | | | | | | +-5th offset
+    #  | | | | | | | |   |   | | | | | | | | | | | +-4th offset
+    #  | | | | | | | |   |   | | | | | | | | | | +-3rd offset
+    #  | | | | | | | |   |   | | | | | | | | | +-2nd offset
+    #  | | | | | | | |   |   | | | | | | | | +-1st offset
+    #  | | | | | | | |   |   | | | | | | | |
+    #  | | | | | | | |   |   | | | | | | | +-8th gain
+    #  | | | | | | | |   |   | | | | | | +-7th gain
+    #  | | | | | | | |   |   | | | | | +-6th gain
+    #  | | | | | | | |   |   | | | | +-5th gain
+    #  | | | | | | | |   |   | | | +-4th gain
+    #  | | | | | | | |   |   | | +-3rd gain
+    #  | | | | | | | |   |   | +-2nd gain
+    #  | | | | | | | |   |   +-1st gain
+    #  | | | | | | | |   |
+    #  | | | | | | | |   +-S7 variable
+    #  | | | | | | | |              
+    #  | | | | | | | +-8th name
+    #  | | | | | | +-7th name
+    #  | | | | | +-6th name
+    #  | | | | +-5th name
+    #  | | | +-4th name
+    #  | | +-3rd name
+    #  | +-2nd name
+    #  +-1st name
+    #
+    # final value will be calculated as follows:
+    #
+    #     output = value * gain + offset
+    #
+    ###############################################################################
+    
+
     [values]
-    rewind diameter [mm] = DB4615.DF714
-    webspeed actual [m/min] = DB4615.DF574
-    vibration left core chuck [mm/s] = DB4614.DF560
-    vibration right core chuck [mm/s] = DB4614.DF564
-    vibration rider roll [mm/s] = DB4614.DF568
-    #Klemmventil UM1,Klemmventil UM2,Klemmventil UM3,Klemmventil UM4,,,, = DB4614.DX564
+    len = MW4,1,0,m
+    74_YI_PV = DB4147.DD1248,1,646.6852,Anström/Woche
+    A9.0,A9.1,A9.2,A9.3,A9.4,A9.5,A9.6,A9.7 = AX9,1-1-1-1-1-1-1-1,14-29-36-45-69-77-82-93,
+    Q19.0,Q19.1,Q19.2,Q19.3,Q19.4,Q19.5,Q19.6,Q19.7 = QX19,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    I1.0,I1.1,I1.2,I1.3,I1.4,I1.5,I1.6,I1.7 = IX1,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    E3.0,E3.1,E3.2,E3.3,E3.4,E3.5,E3.6,E3.7 = EX3,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    F3.0,F3.1,F3.2,F3.3,F3.4,F3.5,F3.6,F3.7 = FX3,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    M5.0,M5.1,M5.2,M5.3,M5.4,M5.5,M5.6,M5.7 = MX5,1-1-1-1-1-1-1-1,0-0-0-0-0-0-0-0,
+    speed = DB63.DF42,1,0,m/min
+    DENSITY = DB3074.DF60,1,0,kg/m³
+    AB9 = AB9,1,0,
+    QB19 = QB19,1,0,s
+    IB1 = IB1,1,0,m
+    EB3 = EB3,1,0,kg
+    FB3 = FB3,1,0,m³
+    MB3 = MB3,1,0,m/min

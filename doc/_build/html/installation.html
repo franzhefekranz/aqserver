@@ -1,0 +1,172 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; Aqserver - data acquisition for S7 PLCs</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - data acquisition for S7 PLCs" href="index.html" />
+    <link rel="next" title="Configuration file for data acquisition server" href="configuration.html" />
+    <link rel="prev" title="About" href="about.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="configuration.html" title="Configuration file for data acquisition server"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/ti-schriftzug-sml.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#install-from-source">Install from source</a></li>
+<li><a class="reference internal" href="#install-with-windows-installer">Install with Windows Installer</a></li>
+<li><a class="reference internal" href="#manual-installation">Manual installation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="about.html"
+                        title="previous chapter">About</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="configuration.html"
+                        title="next chapter">Configuration file for data acquisition server</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Program can be obtained from <a class="reference external" href="https://github.com/franzhefekranz/aqserver">https://github.com/franzhefekranz/aqserver</a> .</p>
+<p>The program was written using Python 2.7.10 under Windows 7 - 32 bit.</p>
+<div class="section" id="install-from-source">
+<h2>Install from source<a class="headerlink" href="#install-from-source" title="Permalink to this headline">¶</a></h2>
+<p>If you would like to run from the python source you must have a working Python 2.7 installation. For a full working Python environment I can recommend the Python (x,y) distribution from <a class="reference external" href="https://python-xy.github.io/">https://python-xy.github.io/</a> or Winpython from <a class="reference external" href="https://winpython.github.io/">https://winpython.github.io/</a> for a Windows environment (just make sure you are using the latest Python 2 package). On Linux and MacOS environments Python should already be installed as part of the OS.</p>
+<p>Program is using (at least parts of) the following Python libraries (not in any particular order..):</p>
+<ul class="simple">
+<li>time</li>
+<li>sys</li>
+<li>os</li>
+<li>shutil</li>
+<li>ctypes</li>
+<li>struct</li>
+<li>logging</li>
+<li>collections</li>
+<li>win32com</li>
+<li>python-snap7</li>
+<li>socket</li>
+<li>datetime</li>
+<li>gzip</li>
+<li>bz2</li>
+<li>binascii</li>
+<li>ConfigParser</li>
+<li>distutils</li>
+</ul>
+<p>This libraries can be installed with pip.</p>
+<p>Python-snap7 is a python wrapper for snap7 from <a class="reference external" href="http://snap7.sourceforge.net/">http://snap7.sourceforge.net/</a>. So make sure you have a working copy of this also on your machine.</p>
+</div>
+<div class="section" id="install-with-windows-installer">
+<h2>Install with Windows Installer<a class="headerlink" href="#install-with-windows-installer" title="Permalink to this headline">¶</a></h2>
+<p>To install the program you can use the provided installer. Run setup.exe as Administrator and follow instructions of the installer. A link to the program will be installed into the startmenu.
+The program will be installed to the directory &#8220;C:\Program Files (x86)\Aqserver\&#8221;. Additionally the folder &#8220;Aqserver&#8221; plus sub folders &#8220;help&#8221;, &#8220;log&#8221; and &#8220;data&#8221; will be created in the My Documents folder of the current user.
+In the &#8220;Aqserver&#8221; directory you will find the following files:</p>
+<ul class="simple">
+<li>test.bat: a Windows / DOS batch file that will start Aqserver with the test configuration. You can copy and edit this file to personalize it for different configuration. I am also using this to start Aqserver from Windows Explorer or to run multiple instances (one batch file per instance)</li>
+<li>test.cfg: an example config file that you can edit to match your requirements (good idea is to make a copy first..)</li>
+</ul>
+<p>To uninstall run the uninstaller from the startmenu or uninstall from windows control panel.</p>
+</div>
+<div class="section" id="manual-installation">
+<h2>Manual installation<a class="headerlink" href="#manual-installation" title="Permalink to this headline">¶</a></h2>
+<p>To install the program in a Windows Environment without a working Python installation use a folder of your liking and copy the files aqserver.exe, aqserver.cfg, aqserver.chm and aqserver.pdf to this folder. Copy snap7.dll to your Windows\system32 directory. That&#8217;s all. No install or setup procedure.
+To remove the program just delete these files from your system. Nothing will remain.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="configuration.html" title="Configuration file for data acquisition server"
+             >next</a></li>
+        <li class="right" >
+          <a href="about.html" title="About"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Last updated on Feb 03, 2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

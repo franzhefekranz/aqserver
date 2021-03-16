@@ -1,2 +1,2 @@
-cd C:\Users\HZMMIC02\Documents\python\Aqserver\nsi
-"C:\Program Files (x86)\NSIS\makensis" aqserver.nsi
+Z:\G\hzmmic02\documents\10_privat\aqserver\Aqserver\nsi
+"C:\Program Files (x86)\NSIS\makensis" Aqserver-0.3.nsi

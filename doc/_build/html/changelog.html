@@ -1,0 +1,200 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Changelog &mdash; Aqserver - data acquisition for S7 PLCs</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="Aqserver - data acquisition for S7 PLCs" href="index.html" />
+    <link rel="next" title="Licensing" href="license.html" />
+    <link rel="prev" title="Introduction to Kst2" href="kst.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="license.html" title="Licensing"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="kst.html" title="Introduction to Kst2"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/ti-schriftzug-sml.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="kst.html"
+                        title="previous chapter">Introduction to Kst2</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="license.html"
+                        title="next chapter">Licensing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/changelog.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h1>
+<p>13 October 2016</p>
+<ul class="simple">
+<li>updated docs</li>
+<li>created new installer using pyinstaller and NSIS. Problems before with py2exe.</li>
+</ul>
+<p>11 October 2016</p>
+<ul class="simple">
+<li>added check for maximum records (from config) to avoid files getting too big</li>
+<li>added try ..except for reading config file</li>
+</ul>
+<p>06 October 2016</p>
+<ul class="simple">
+<li>PrgUtils.py: added get username for all OS (Windows, Linux, MacOS)</li>
+<li>aqserver.py: change data and log directory, depending on OS. In Windows this will be sub directories of .. My Documents\Aqserver folder, in Linux/MacOS this will be in current users home directory (//home//user//Aqserver//..)</li>
+</ul>
+<p>05 October 2016</p>
+<ul class="simple">
+<li>NSIS: tried to make setup.exe for Windows</li>
+<li>aqserver.py: added manual trigger always possible</li>
+<li>aqserver.py: added check for variables, and exit with config fault, problem to logfile</li>
+</ul>
+<p>30 September 2016</p>
+<ul class="simple">
+<li>updating docs</li>
+<li>aqserver.py: check if argument for config file is list or string</li>
+<li>aqserver.py: added purging log directory, when debug is 0 (= no debugging), only actual logfile remains, with entry program start and end</li>
+<li>aqserver.py: improved error detection, connect and disconnect of client</li>
+</ul>
+<p>29 September 2016</p>
+<ul class="simple">
+<li>updated docs</li>
+<li>compiled to exe with py2exe</li>
+<li>can test now with local Snap7 server</li>
+<li>added verification for configfile, data dir and log dir, if a dir is missing it will be created</li>
+<li>fixed keypress problem, program was not responding to every keypress</li>
+</ul>
+<p>15 September 2016</p>
+<ul class="simple">
+<li>added try..except for communication error, program exits normal now, with message to user and logfile</li>
+<li>when client was already connected program tries to disconnect and to connect again (no exit)</li>
+<li>when scantime is set to 0 then program scans as fast as possible (no sleep)</li>
+</ul>
+<p>28 November 2015</p>
+<ul class="simple">
+<li>modified aqserver(none OOP version), can now use directory structure yearmonthday  for saved files</li>
+</ul>
+<p>11 August 2015</p>
+<ul class="simple">
+<li>started refactoring and making OOP aware, with acqserver class (not yet finished)</li>
+</ul>
+<p>10 August 2015</p>
+<ul class="simple">
+<li>tested and corrected trigger functionality</li>
+<li>tested S7 300 with plcsim and nettoplcsim</li>
+</ul>
+<p>07 August 2015</p>
+<ul class="simple">
+<li>added filecopy routines to PrgUtils</li>
+<li>added trigger functionality to server (aqserver.py)</li>
+</ul>
+<p>06 August 2015</p>
+<ul class="simple">
+<li>added config section for debug, with settings for debug level, logfile</li>
+<li>corrected error in endless loop that creates string with values</li>
+<li>create header template at start, that can be copied to further data files in case of trigger</li>
+<li>removed all sys.args, only*c configfile remains, all other settings in config file</li>
+<li>tried to start 2 instances of program</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>use different configfile</li>
+<li>set different recording filename</li>
+<li>when started from 2 cmd environments with*c parameter and different configfile, it works!</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>tested filecopy, rename, append, replace in file as preparation for trigger event actions</li>
+</ul>
+<p>05 August 2015</p>
+<ul class="simple">
+<li>added data file name to config, so we can start aqserver several times using different settings, when scanning several PLCs</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="license.html" title="Licensing"
+             >next</a></li>
+        <li class="right" >
+          <a href="kst.html" title="Introduction to Kst2"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Last updated on Feb 03, 2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

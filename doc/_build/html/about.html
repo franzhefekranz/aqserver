@@ -1,0 +1,128 @@
+
+
+<!doctype html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>About &mdash; Aqserver - data acquisition for S7 PLCs</title>
+    
+    <link rel="stylesheet" href="_static/bizstyle.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1a',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/bizstyle.js"></script>
+    <link rel="author" title="About these documents" href="#" />
+    <link rel="top" title="Aqserver - data acquisition for S7 PLCs" href="index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Aqserver - Siemens S7 data acquisition server" href="index.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="installation.html" title="Installation"
+             accesskey="N">next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Aqserver - Siemens S7 data acquisition server"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/ti-schriftzug-sml.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Aqserver - Siemens S7 data acquisition server</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="installation.html"
+                        title="next chapter">Installation</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/about.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this headline">¶</a></h1>
+<p>With this program you can record values from a Simatic S7 PLC to a CSV File. Depending on the number of values to record the scan time is changing, thus increasing with the number of values. It is possible to set trigger conditions, that will start a new file. The old file will be compressed and stored in a selectable directory tree.
+Using a pre- and post trigger time, you can set an overlap of old and new file. If you are not able to set a working trigger, the trigger can also be activated manually.</p>
+<p>A config file must exist (default file is aqserver.cfg) that defines communication and other parameters and of course the S7 variables to scan. Open the config file in your preferred editor and read the comments on how to
+configure.</p>
+<p>Values will be stored to a csv-file in subdirectory data. Filename can be specified in configfile. Once a configurable trigger is raised, a new datafile begins.</p>
+<p>After trigger or when program is stopped, the data file will be compressed and stored to a path, that can also be specified in the config file.</p>
+<p>When running several instances of the program, using different config files, values can be recorded from different PLCs at the same time.</p>
+<p>Please note that this program is in an early stage of development. If you run into problems when using it, see the &#8220;Problems&#8221; section of this manual. Aqserver will not create a problem with your PLC program though.</p>
+<p>Using Kst2 from <a class="reference external" href="https://kst-plot.kde.org">https://kst-plot.kde.org</a> the datafile can be read and plotted online during the recording. Also decompressed archives can be plotted to your liking.</p>
+<p>An alternative would be LiveGraph from <a class="reference external" href="http://www.live-graph.org">http://www.live-graph.org</a> , but then the data files must be modified, because LiveGraph is expecting csv-files in a certain format (actually this is not provided by Aqserver at the moment).</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="installation.html" title="Installation"
+             >next</a></li>
+        <li class="right" >
+          <a href="index.html" title="Aqserver - Siemens S7 data acquisition server"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Aqserver</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015, Michael Taxis.
+      Last updated on Feb 03, 2017.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

@@ -69,7 +69,7 @@ Section "Hauptgruppe" SEC01
   CreateDirectory "$SMPROGRAMS\Aqserver"
   CreateShortCut "$SMPROGRAMS\Aqserver\Aqserver.lnk" "$INSTDIR\aqserver.exe"
   CreateShortCut "$DESKTOP\Aqserver.lnk" "$INSTDIR\aqserver.exe"
-  SetOutPath "$WINDIR\system32"
+  SetOutPath "$INSTDIR"
   File "..\dist\snap7.dll"
   SetOutPath "$DOCUMENTS\Aqserver"
   File "..\dist\aqserver.bat"

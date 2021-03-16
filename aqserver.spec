@@ -4,8 +4,8 @@ block_cipher = None
 
 
 a = Analysis(['aqserver.py'],
-             pathex=['C:\\Users\\HZMMIC02\\Documents\\python\\Aqserver'],
-             binaries=None,
+             pathex=['Z:\\G\\hzmmic02\\documents\\10_privat\\aqserver\\Aqserver'],
+             binaries=[ ( 'snap7.dll', '.' ) ],
              datas=None,
              hiddenimports=[],
              hookspath=[],

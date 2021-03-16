@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Project SYSTEM "Project-5.1.dtd">
+<!-- eric project file for project Aqserver -->
+<!-- Saved: 2017-03-31, 12:26:23 -->
+<!-- Copyright (C) 2017 Michael Taxis, aqserver@taxis-instruments.de -->
+<Project version="5.1">
+  <Language>en_US</Language>
+  <Hash>47a33244cadb62b6a81e69ed59c9c15abab8a79f</Hash>
+  <ProgLanguage mixed="0">Python2</ProgLanguage>
+  <ProjectType>Console</ProjectType>
+  <Description>With this program you can record values from a Simatic S7 PLC to a CSV File. Depending on the number of values to record the scan time is changing, thus increasing with the number of values. It is possible to set trigger conditions, that will start a new file. The old file will be compressed and stored in a selectable directory tree. Using a pre- and post trigger time, you can set an overlap of old and new file. If you are not able to set a working trigger, the trigger can also be activated manually.
+
+A config file must exist (default file is aqserver.cfg) that defines communication and other parameters and of course the S7 variables to scan. Open the config file in your preferred editor and read the comments on how to configure.
+
+Values will be stored to a csv-file in subdirectory data. Filename can be specified in configfile. Once a configurable trigger is raised, a new datafile begins.
+
+After trigger or when program is stopped, the data file will be compressed and stored to a path, that can also be specified in the config file.
+
+When running several instances of the program, using different config files, values can be recorded from different PLCs at the same time.
+
+Please note that this program is in an early stage of development. If you run into problems when using it, see the “Problems” section of this manual. Aqserver will not create a problem with your PLC program though.
+
+Using Kst2 from https://kst-plot.kde.org the datafile can be read and plotted online during the recording. Also decompressed archives can be plotted to your liking.</Description>
+  <Version>0.1</Version>
+  <Author>Michael Taxis</Author>
+  <Email>aqserver@taxis-instruments.de</Email>
+  <Eol index="0"/>
+  <Sources>
+    <Source>CommUtils.py</Source>
+    <Source>FileUtils.py</Source>
+    <Source>PrgUtils.py</Source>
+    <Source>RetCodes.py</Source>
+    <Source>S7Utils.py</Source>
+    <Source>TimeUtils.py</Source>
+    <Source>__init__.py</Source>
+    <Source>aqserver.py</Source>
+    <Source>backup/aqserver_20161110.py</Source>
+    <Source>backup/aqserver_20170316.py</Source>
+    <Source>backup/aqserver_20170328.py</Source>
+    <Source>doc/de/conf.py</Source>
+    <Source>doc/en/conf.py</Source>
+    <Source>kbhit.py</Source>
+    <Source>setup.py</Source>
+  </Sources>
+  <Forms/>
+  <Translations/>
+  <Resources/>
+  <Interfaces/>
+  <Others>
+    <Other>README.md</Other>
+    <Other>build/aqserver/warnaqserver.txt</Other>
+    <Other>doc/de/_build/html/_sources/about.txt</Other>
+    <Other>doc/de/_build/html/_sources/changelog.txt</Other>
+    <Other>doc/de/_build/html/_sources/configuration.txt</Other>
+    <Other>doc/de/_build/html/_sources/index.txt</Other>
+    <Other>doc/de/_build/html/_sources/installation.txt</Other>
+    <Other>doc/de/_build/html/_sources/instance.txt</Other>
+    <Other>doc/de/_build/html/_sources/kst.txt</Other>
+    <Other>doc/de/_build/html/_sources/license.txt</Other>
+    <Other>doc/de/_build/html/_sources/new.txt</Other>
+    <Other>doc/de/_build/html/_sources/options.txt</Other>
+    <Other>doc/de/_build/html/_sources/problems.txt</Other>
+    <Other>doc/de/_build/html/_sources/usage.txt</Other>
+    <Other>doc/de/about.rst</Other>
+    <Other>doc/de/changelog.rst</Other>
+    <Other>doc/de/configuration.rst</Other>
+    <Other>doc/de/index.rst</Other>
+    <Other>doc/de/installation.rst</Other>
+    <Other>doc/de/instance.rst</Other>
+    <Other>doc/de/kst.rst</Other>
+    <Other>doc/de/license.rst</Other>
+    <Other>doc/de/new.rst</Other>
+    <Other>doc/de/options.rst</Other>
+    <Other>doc/de/problems.rst</Other>
+    <Other>doc/de/usage.rst</Other>
+    <Other>doc/en/_build/html/_sources/about.txt</Other>
+    <Other>doc/en/_build/html/_sources/changelog.txt</Other>
+    <Other>doc/en/_build/html/_sources/configuration.txt</Other>
+    <Other>doc/en/_build/html/_sources/index.txt</Other>
+    <Other>doc/en/_build/html/_sources/installation.txt</Other>
+    <Other>doc/en/_build/html/_sources/instance.txt</Other>
+    <Other>doc/en/_build/html/_sources/intl.txt</Other>
+    <Other>doc/en/_build/html/_sources/kst.txt</Other>
+    <Other>doc/en/_build/html/_sources/license.txt</Other>
+    <Other>doc/en/_build/html/_sources/new.txt</Other>
+    <Other>doc/en/_build/html/_sources/options.txt</Other>
+    <Other>doc/en/_build/html/_sources/problems.txt</Other>
+    <Other>doc/en/_build/html/_sources/usage.txt</Other>
+    <Other>doc/en/about.rst</Other>
+    <Other>doc/en/changelog.rst</Other>
+    <Other>doc/en/configuration.rst</Other>
+    <Other>doc/en/index.rst</Other>
+    <Other>doc/en/installation.rst</Other>
+    <Other>doc/en/instance.rst</Other>
+    <Other>doc/en/intl.rst</Other>
+    <Other>doc/en/kst.rst</Other>
+    <Other>doc/en/license.rst</Other>
+    <Other>doc/en/new.rst</Other>
+    <Other>doc/en/options.rst</Other>
+    <Other>doc/en/problems.rst</Other>
+    <Other>doc/en/usage.rst</Other>
+    <Other>notes/setup.txt</Other>
+    <Other>nsi/License-gpl-3.0.txt</Other>
+    <Other>nsi/lgpl-3.0.txt</Other>
+    <Other>todo.rst</Other>
+    <Other>web/de/_sources/about.txt</Other>
+    <Other>web/de/_sources/changelog.txt</Other>
+    <Other>web/de/_sources/configuration.txt</Other>
+    <Other>web/de/_sources/index.txt</Other>
+    <Other>web/de/_sources/installation.txt</Other>
+    <Other>web/de/_sources/instance.txt</Other>
+    <Other>web/de/_sources/kst.txt</Other>
+    <Other>web/de/_sources/license.txt</Other>
+    <Other>web/de/_sources/new.txt</Other>
+    <Other>web/de/_sources/options.txt</Other>
+    <Other>web/de/_sources/problems.txt</Other>
+    <Other>web/de/_sources/usage.txt</Other>
+    <Other>web/en/_sources/about.txt</Other>
+    <Other>web/en/_sources/changelog.txt</Other>
+    <Other>web/en/_sources/configuration.txt</Other>
+    <Other>web/en/_sources/index.txt</Other>
+    <Other>web/en/_sources/installation.txt</Other>
+    <Other>web/en/_sources/instance.txt</Other>
+    <Other>web/en/_sources/intl.txt</Other>
+    <Other>web/en/_sources/kst.txt</Other>
+    <Other>web/en/_sources/license.txt</Other>
+    <Other>web/en/_sources/new.txt</Other>
+    <Other>web/en/_sources/options.txt</Other>
+    <Other>web/en/_sources/problems.txt</Other>
+    <Other>web/en/_sources/usage.txt</Other>
+  </Others>
+  <MainScript>aqserver.py</MainScript>
+  <Vcs>
+    <VcsType>None</VcsType>
+  </Vcs>
+  <FiletypeAssociations>
+    <FiletypeAssociation pattern="*.e4p" type="OTHERS"/>
+    <FiletypeAssociation pattern="*.idl" type="INTERFACES"/>
+    <FiletypeAssociation pattern="*.md" type="OTHERS"/>
+    <FiletypeAssociation pattern="*.ptl" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.py2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.pyw2" type="SOURCES"/>
+    <FiletypeAssociation pattern="*.rst" type="OTHERS"/>
+    <FiletypeAssociation pattern="*.txt" type="OTHERS"/>
+    <FiletypeAssociation pattern="README" type="OTHERS"/>
+    <FiletypeAssociation pattern="README.*" type="OTHERS"/>
+  </FiletypeAssociations>
+</Project>
